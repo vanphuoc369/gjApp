@@ -1,0 +1,2 @@
+<?component name="add-view" inline="true" macroURI="add-view.zul"?>
+<add-view model="${entry.donViHanhChinhs.type().newInstance()}"  vmArgs="${arg.vmArgs}" save="Tạo mới đơn vị hành chính" />

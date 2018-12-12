@@ -1,0 +1,75 @@
+<window xmlns:zk="zk" xmlns:n="native" xmlns:x="xhtml" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init(arg.model)" validationMessages="@id('vmsgs')" action="show: slideIn"
+	title="${arg.save}" id="wdn" border="normal"
+	mode="modal" contentStyle="overflow:auto;" closable="true" width="800px"
+	whatever="@load(true,after='saveChude') @converter('vn.toancauxanh.service.DetachConverter')" >
+	<zscript>
+		node = arg.get("node");
+		vmArgs = arg.get("vmArgs");
+		tree = arg.get("tree");
+		catSelected = arg.get("catSelected");
+		isAdd = arg.get("isAdd");
+		if(isAdd.equals("true")){
+			vm.setParent(catSelected);
+		}
+	</zscript>
+	<div class="row box-body">
+		<div zclass="col-md-12">
+			<div class="form-group" >
+				<hlayout class="control-label">
+					<x:label>Chủ đề cha</x:label>
+				</hlayout>
+				<vlayout>
+					<combobox readonly="true"
+						model="@load(entry.categories.getListAllCategoryAndNullButThis(vm))"
+						selectedItem="@save(vm.parent)"
+						value="@load(vm.parent eq null ? 'Chọn chủ đề cha' : vm.parent.childName)"
+						width="100%">
+						<template name="model">
+							<comboitem label="@load(each.childName eq null ? 'Chọn chủ đề cha' : each.childName)" />
+						</template>
+					</combobox>
+				</vlayout>
+			</div>
+		</div>
+		<div zclass="col-lg-12">
+			<div zclass="form-group">
+				<hlayout class="control-label">
+					<x:label>Tên chủ đề<n:small class="required"> *</n:small></x:label>
+				</hlayout>
+				<vlayout>
+					<textbox width="100%" class="form-control" maxlength="255"
+						value="@bind(vm.name) @save(vm.name, before='saveChude') @validator(vm.validatorCatChil)" />
+					<label zclass="error"
+						value="@load(vmsgs[self.previousSibling])" />
+				</vlayout>
+			</div>
+			<div zclass="form-group">
+				<hlayout class="control-label">
+					<x:label>Mô tả</x:label>
+				</hlayout>
+				<vlayout>
+					<textbox width="100%" rows="5" maxlength="255"
+						value="@bind(vm.description)" />
+				</vlayout>
+			</div>
+			<div zclass="form-group">
+				<vlayout>
+					<checkbox label="Áp dụng" checked="@bind(vm.checkApDung)" />
+				</vlayout>
+				<!-- <vlayout>
+					<checkbox label="Cung cấp RSS" checked="@bind(vm.cungCapRss)" />
+				</vlayout> -->
+			</div>
+		</div>
+	</div>
+	<div class="row box-footer">
+		<x:button class="btn btn-primary"
+			onClick="@command('saveChude',node=node, tree=tree,isAdd=isAdd)">
+			<n:i class="fa fa-save"></n:i> Lưu 
+		</x:button>&#160;
+		<x:button class="btn default" onClick="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')">
+			<n:i ></n:i> Hủy
+		</x:button>&#160;
+	</div>
+</window>

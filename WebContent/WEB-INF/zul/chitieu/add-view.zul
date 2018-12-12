@@ -1,0 +1,37 @@
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" id="wdn"
+	border="normal" mode="modal" action="show: slideIn"
+	contentStyle="overflow:auto;" closable="true" title="${arg.save}"
+	onClose="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQueryChi')"
+	whatever="@load(false,after='saveLyDo') @converter('vn.toancauxanh.service.DetachConverter')"
+	viewModel="@id('vm') @init(arg.model)"
+	validationMessages="@id('vmsgs')" width="450px"
+	form="@id('fx') @load(vm) @save(vm, before={'saveLyDo'})">
+	<zscript>
+			vmArgs = arg.get("vmArgs");
+			strSave = arg.get("save");
+			vm.thu = Boolean.valueOf(arg.get("thu"));
+		</zscript>
+		<div class="row box-body">
+			<div zclass="form-group">
+				<hlayout class="control-label">
+					<x:label>Nội dung lý do chi tiêu<n:small class="required"> *</n:small></x:label>
+				</hlayout>
+				<vlayout>
+					<textbox class="form-control" rows="5" maxlength="1000"
+						value="@bind(vm.content) @save(vm.content, before={'saveLyDo'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" />
+					<label zclass="error" value="@load(vmsgs[self.previousSibling])" />
+				</vlayout>
+			</div>
+		</div>
+		<div class="row box-footer">  		
+			<x:button style="margin-right: 10px;" class="btn btn-success" 
+			 	zk:if="${(vm.noId() and entry.quyen.lydothuchi_them) or (!vm.noId() and entry.quyen.lydothuchi_sua)}"
+				onClick="@command('saveLyDo', list=vmArgs, attr='targetQueryChi', wdn=wdn)">
+				<n:i class="fa fa-save"></n:i>
+				Lưu 
+			</x:button>
+			<x:button class="btn btn-default" onClick="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQueryChi')">
+				Hủy
+			</x:button>
+		</div>
+	</window>

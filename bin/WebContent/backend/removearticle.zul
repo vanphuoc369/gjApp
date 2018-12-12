@@ -1,0 +1,14 @@
+<!-- <?variable-resolver class="org.zkoss.spring.DelegatingVariableResolver"?> -->
+<zk>
+<window title="Resize Img" border="normal">
+	Resize Img. 
+	<zscript>
+		<![CDATA[
+			entry = new vn.toancauxanh.service.BaseObject().core();     	
+			entry.articles.removeArticle();
+		]]>
+		</zscript>
+	Finish!
+</window>
+
+</zk>

@@ -1,0 +1,8 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<!-- <?variable-resolver class="org.zkoss.spring.DelegatingVariableResolver"?> -->
+<zk xmlns:n="native" xmlns:zk="zk" xmlns:x="xhtml">
+	<div zclass="footer">
+		<n:div class="font-10 f-uppercase">Cơ quan chủ quản: Sở Tài nguyên Môi trường Đà Nẵng</n:div>
+		<n:div class="font-10">Phiên bản 1.0. Phát triển bởi Toàn Cầu Xanh</n:div>
+	</div>	
+</zk>

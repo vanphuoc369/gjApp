@@ -1,0 +1,6 @@
+<zk>
+	<zscript>
+		desktop.setCurrentDirectory("/WEB-INF/zul");
+		Executions.forward("/frontend/index.zhtml?file=/frontend/home/home.zhtml");
+	</zscript>
+</zk>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:zk="zk" xmlns:z="zul" xmlns:w="client">
+	<head>
+	  <title>Greenglobal java app</title>
+	  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+	  <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE">
+	  <!-- favicon -->
+	  <link href="${execution.contextPath}/assetsfe/images/favicon.ico" type="image/x-icon"  rel="icon">
+	  <!-- meta social -->
+	  <meta name="twitter:card" content="" />
+	  <meta name="twitter:site" content="" />
+	  <meta name="twitter:creator" content="" />
+	  <meta property="og:description" content="" />
+	  <meta property="og:image" content="" />
+	  <meta property="og:site_name" content="">
+	  <meta property="og:title" content="" />
+	  <meta property="og:type" content="">
+	  <meta property="og:url" content="" />
+	  <!-- include styles.html -->
+	  <!-- link rel="stylesheet" href="${execution.contextPath}/assetsfe/style/custom.css" -->
+	</head>
+	<body>
+	<zscript><![CDATA[               
+		String resource = execution.getParameter("resource");
+		entry = new vn.toancauxanh.service.BaseObject().core();
+		String ctxPath = execution.getContextPath();
+	]]></zscript>
+	  <div class="scr-menu"></div>
+	  <div class="wrapper">
+		<z:include src="/frontend/common/header.zhtml"></z:include>
+		<!-- z:include src="/frontend/home/home.zhtml"></z:include -->
+  		<z:include src="${execution.getParameter('file')}" instant="true"></z:include>
+		<z:include class="wrap-footer" src="/frontend/common/footer.zhtml"></z:include>
+	  </div>
+	  <!-- include scripts.html -->
+	  <!-- script src="/assetsfe/script/vendor.min.js"></script -->
+	</body>
+</html>

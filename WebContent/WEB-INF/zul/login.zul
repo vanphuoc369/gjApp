@@ -1,0 +1,79 @@
+<?style href="/login/css/login.min.css" type="text/css" ?>
+<?page title="Đăng nhập" contentType="text/html;charset=UTF-8"?>
+<?meta http-equiv="X-UA-Compatible" content="IE=edge"?>
+<?meta name="viewport" content="width=device-width, initial-scale=1"?>
+<?script type="text/javascript"  src="/login/js/login.min.js"?>
+<?link rel="icon" href="/img/favicon.png" type="image/x-icon" ?>
+<zk xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" xmlns:w="client" xmlns:ca="client/attribute">
+	<style>
+		body {background: #E9EEF3}
+		.login-head {
+			text-align: center;
+		}
+		.login-title {
+			float: none;
+		}
+		.login-title p {
+			text-align: center;
+		}
+		.login-icon {
+			display: inline-block;
+			float: none;
+		}
+		#login h2 {
+			background-color: #ffffff;
+    		border-bottom: 1px solid #eeeeee;
+    		color: #000;
+    		padding: 18px;
+		}
+		.login_content {
+			background-color: #fbfbfb;
+		}
+	</style>
+	<div class="" apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('vn.toancauxanh.service.NhanVienService')">
+		<include src="/WEB-INF/zul/notification.zul"></include>
+		<zscript>
+			String usernameX = "";
+		</zscript>
+		<a class="hiddenanchor" id="toregister"></a>
+		<a class="hiddenanchor" id="tologin"></a>
+
+		<n:div id="wrapper">
+			<div class="login-head" style="padding-top: 15%">
+				<span class="login-icon">
+				</span>
+				<div class="login-title">				
+					<n:p>GREEN GLOBAL</n:p>
+					<n:p>Java Devision</n:p>
+				</div>
+			</div>
+			
+			<n:div id="login" class="animate form">				
+				<n:h2>ĐĂNG NHẬP</n:h2>
+				<n:section class="login_content">
+					<n:form>
+						<div class="login-field">
+							<textbox type="text" id="username" focus="true" 
+								class="form-control username" placeholder="Tên đăng nhập" onOK="@command('login',email=username.getValue(),password=password.getValue())">
+							</textbox>		
+							<n:span class="icon-username"></n:span>						
+						</div>
+						<div class="login-field">
+							<textbox type="password" id="password" ca:autocomplete="on"
+								class="form-control password" placeholder="Mật khẩu" onOK="@command('login',email=username.getValue(),password=password.getValue())">
+							</textbox>
+							<n:span class="icon-password"></n:span>	
+							<timer id="timer" delay="10" repeats="true" w:onTimer="zk.Widget.$('$username').updateChange_();zk.Widget.$('$password').updateChange_();" />
+						</div>
+						<div>
+							<a sclass="btn btn-default submit btn-login" label="Đăng nhập" onClick="@command('login',email=username.getValue(),password=password.getValue())">
+							</a>
+						</div>
+						<div class="clearfix"></div>
+					</n:form>
+				</n:section>
+			</n:div>
+		</n:div>
+	</div>	
+</zk>

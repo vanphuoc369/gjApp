@@ -1,0 +1,42 @@
+<language-addon>
+    <language-name>xul/html</language-name>	
+    <component>
+        <component-name>button</component-name>
+        <extends>button</extends>
+        <property>
+            <property-name>autodisable</property-name>
+            <property-value>self</property-value>
+        </property>
+    </component>
+    <component>
+        <component-name>menuitem</component-name>
+        <extends>menuitem</extends>
+        <property>
+            <property-name>autodisable</property-name>
+            <property-value>self</property-value>
+        </property>
+    </component>
+    <component>
+        <component-name>toolbarbutton</component-name>
+        <extends>toolbarbutton</extends>
+        <property>
+            <property-name>autodisable</property-name>
+            <property-value>self</property-value>
+        </property>
+    </component>    
+    <component>
+        <component-name>a</component-name>
+        <extends>a</extends>
+        <property>
+            <property-name>autodisable</property-name>
+            <property-value>self</property-value>
+        </property>
+    </component>
+    <!-- <javascript src="/js/afterglow.min.js" type="text/javascript" />
+	<javascript src="/mediaelement/js/mediaelement-and-player.js" type="text/javascript" />
+	<stylesheet href="/mediaelement/css/mediaelementplayer.css" type="text/css"/> -->
+	<!-- <javascript src="/js/afterglow.min.js" type="text/javascript" /> -->
+	<!-- <javascript src="/js/afterglow.min.js" type="text/javascript" /> -->
+<!--     <stylesheet href="/css/bootstrap.min.css" type="text/css"/> -->
+<!--     <stylesheet href="/css/cm.css" type="text/css"/> -->
+</language-addon>

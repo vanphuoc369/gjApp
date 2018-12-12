@@ -1,0 +1,80 @@
+<zk>
+	<zscript><![CDATA[
+		self.page.title= "Quản lý dự án";
+		Long id = Long.parseLong(execution.getParameter("id"));
+		boolean checkGetDuAn = new vn.toancauxanh.gg.model.DuAn().checkGetDuAn(id);
+		boolean duAnNull = false;
+		vn.toancauxanh.gg.model.DuAn vm = new vn.toancauxanh.gg.model.DuAn().getDuAnById(id);
+		if(vm != null){
+			vm.setListCongViec(new vn.toancauxanh.cms.service.CongViecService().getTargetQueryById(vm.getId()));
+		}
+		else {
+			duAnNull = true;
+		}
+		vn.toancauxanh.cms.service.CongViecService vmCV = new vn.toancauxanh.cms.service.CongViecService();
+	]]></zscript>
+	<window xmlns:zk="zk" xmlns:n="native" xmlns:x="xhtml" apply="org.zkoss.bind.BindComposer" title="Quản lý dự án" 
+		viewModel="@id('vm') @init(vm eq null ? 'vn.toancauxanh.gg.model.DuAn' : vm)" validationMessages="@id('vmsgs')"
+		whatever="@load(true,after='saveDuAn') @converter('vn.toancauxanh.service.DetachConverter')">
+		<n:div>
+		    <n:div zk:if="${checkGetDuAn and !duAnNull}">
+				<div class="row box-body">
+					<div zclass="col-lg-12">
+						<div zclass="form-group">
+							<hlayout class="control-label">
+								<x:label>Tên dự án<n:small class="required"> *</n:small></x:label>
+							</hlayout>
+							<vlayout>
+								<textbox width="100%" class="form-control" maxlength="150"
+									value="@load(vm.tenDuAn) @save(vm.tenDuAn, before={'saveDuAn', 'redirectPage'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" />
+								<label zclass="error" value="@load(vmsgs[self.previousSibling])" />
+							</vlayout>
+						</div>
+						<div zclass="form-group">
+							<hlayout class="control-label">
+								<x:label>Tóm tắt nội dung</x:label>
+							</hlayout>
+							<vlayout>
+								<textbox width="100%" rows="5" maxlength="250" value="@bind(vm.tomTatNoiDung)" />
+							</vlayout>
+						</div>
+						<div zclass="form-group">
+							<vlayout>
+								<checkbox label="Áp dụng" checked="@bind(vm.checkApDung)" />
+							</vlayout>
+						</div>
+						<n:hr></n:hr>
+						<n:div class="box-tools pull-left">
+							<x:button class="btn btn-success" zk:if="${entry.quyen.congviec_lietke}"
+								onClick="@command('redirectPage', zul='congviec/add.zul', vmArgs=vm, vm=vmCV)">
+								<n:i class="fa fa-magic"></n:i> &#160;&#160;Quản lý công việc
+							</x:button>
+						</n:div>
+						<div class="row box-footer">
+							<x:button class="btn btn-primary" visible="@load(entry.quyen.duan_sua or (vm.noId() and entry.quyen.duan_them))"
+								onClick="@command('saveDuAn')">
+								<n:i class="fa fa-save"></n:i> Lưu 
+							</x:button>&#160;
+							<x:button class="btn default" onClick="@command('onClose')">
+								<n:i ></n:i> Hủy
+							</x:button>&#160;
+						</div>
+					</div>
+				</div>
+		    </n:div>
+			<n:session zk:if="${!checkGetDuAn or vm eq null}">
+				<div style="height: 30px;">
+				</div>
+				<div class="alert aler-notification">
+					<label if="${!checkGetDuAn and !duAnNull}">Bạn không có quyền truy cập dự án này !</label>
+					<label if="${duAnNull}">Không tìm thấy dự án !</label>
+				</div>
+				<div class="row box-footer">
+					<x:button class="btn default" onClick="@command('onClose')">
+						<n:i ></n:i> Trở về
+					</x:button>&#160;
+				</div>
+			</n:session>
+	  	</n:div>
+	</window>
+</zk>

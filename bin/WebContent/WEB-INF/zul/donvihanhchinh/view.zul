@@ -1,0 +1,2 @@
+<?component name="add-view" inline="true" macroURI="add-view.zul"?>
+<add-view model="${arg.catSelected}" vmArgs="${arg.vmArgs}" save="Thông tin đơn vị hành chính" node="${arg.node}" tree="${arg.tree}"/>

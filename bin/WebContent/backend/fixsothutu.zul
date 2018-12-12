@@ -1,0 +1,11 @@
+<!-- <?variable-resolver class="org.zkoss.spring.DelegatingVariableResolver"?> -->
+<zk>
+<zscript>
+<![CDATA[		
+		import vn.toancauxanh.service.*;
+		import vn.toancauxanh.tu.model.*;
+		entry = new vn.toancauxanh.service.BaseObject().core();
+		entry.categories.fixSoThuTu();
+]]>
+</zscript>
+</zk>

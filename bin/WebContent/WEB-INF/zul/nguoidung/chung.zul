@@ -1,0 +1,153 @@
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" apply="org.zkoss.bind.BindComposer"
+	id="nguoiDungWin" border="normal" mode="modal" action="show: slideIn"
+	contentStyle="overflow:auto;" closable="true" title="${arg.save}"
+	onClose="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')"
+	whatever="@load(true,after='saveNhanVien') @converter('vn.toancauxanh.service.DetachConverter')"
+	viewModel="@id('vm') @init(arg.model)" validationMessages="@id('vmsgs')" width="800px"
+	form="@id('fx') @load(vm) @save(vm, before={'saveNhanVien'}) @validator(vm.getValidator(true))">
+	<zscript>
+		entry = new vn.toancauxanh.service.BaseObject().core();
+		notifyObject = arg.get("vmArgs");
+		donVis = entry.donVis;
+	</zscript>
+	<div class="row box-body">
+		<div class="${(vm.noId() and entry.quyen.nguoidung_them) or (!vm.noId() and entry.quyen.nguoidung_sua) ? 'col-md-6' : 'col-md-12'}">
+			<div class="form-group">
+				<x:label>Đơn vị<n:small class="required"> *</n:small></x:label>
+				<div class="row">
+					<div class="col-md-6 col-sm-6">
+						<combobox width="100%" model="@load(donVis.listDonViChaAndNull)"
+							readonly="true" disabled="@load(!entry.quyen.nguoidung_them)"
+							value="@load(vm.donViCha ne null ? vm.donViCha.ten : 'Chọn đơn vị')"
+							selectedItem="@load(vm.donViCha) @save(vm.donViCha, before='saveNhanVien') 
+								@bind(donVis.selectedDonVi)
+								@validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')"
+							placeholder="Chọn đơn vị" >
+							<template name="model">
+								<comboitem label="@load(empty each? 'Chọn đơn vị' :  each.ten)" />
+							</template>
+							<attribute name="onCreate">
+								if (vm.donViCha != null) {
+									donVis.setSelectedDonVi(vm.donViCha);
+								}
+							</attribute>
+						</combobox>
+						<label class="error" value="@load(vmsgs[self.previousSibling])" />
+					</div>
+					<div class="col-md-6 col-sm-6 second-combobox">
+						<combobox width="100%" model="@load(donVis.listDonViConAndNull)"
+							readonly="true" disabled="@load(!entry.quyen.nguoidung_them)"
+							value="@load(vm.donViCon ne null ? vm.donViCon.ten : 'Chọn đơn vị con')"
+							selectedItem="@load(vm.donViCon) @save(vm.donViCon, before='saveNhanVien')"
+							placeholder="Chọn đơn vị" >
+							<template name="model">
+								<comboitem label="@load(empty each? 'Chọn đơn vị con' :  each.ten)" />
+							</template>
+						</combobox>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<x:label>Họ và tên<n:small class="required"> *</n:small></x:label>
+				<textbox class="form-control" width="100%"  maxlength="255"
+					value="@load(vm.hoVaTen) @save(vm.hoVaTen, before='saveNhanVien') @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" />
+				<label class="error" value="@load(vmsgs[self.previousSibling])" />
+			</div>
+			<div class="form-group">
+				<x:label>Tên đăng nhập<n:small class="required"> *</n:small></x:label>
+				<textbox class="form-control" width="100%" maxlength="255"
+					disabled="@load(!entry.quyen.nguoidung_them)"
+					value="@bind(vm.tenDangNhap) @save(vm.tenDangNhap, before='saveNhanVien') @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty', field='tenDangNhap', id=vm, cmsg='Tên đăng nhập này đã tồn tại.')" />
+				<label class="error" value="@load(vmsgs[self.previousSibling])" />
+			</div>
+			
+			<div class="form-group" if="${vm.noId()}">
+				<x:label>Mật khẩu<n:small class="required"> *</n:small></x:label>
+				<textbox class="form-control" width="100%" type="password" maxlength="255"
+					value="@bind(vm.matKhau2) @save(vm.matKhau2, before='saveNhanVien') @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" />
+				<label class="error" value="@load(vmsgs[self.previousSibling])" />
+			</div>
+			<div class="form-group" if="${vm.noId()}">
+				<x:label>Xác nhận mật khẩu<n:small class="required"> *</n:small></x:label>
+				<textbox class="form-control" width="100%" type="password" maxlength="255"
+					value="@bind(vm.matKhau) @save(vm.matKhau, before='saveNhanVien') @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty', password=vm.matKhau2)" />
+				<label class="error" value="@load(vmsgs[self.previousSibling])" />
+			</div>			
+			
+			<div class="form-group" if="${!vm.noId()}">
+				<vlayout>	
+					<groupbox mold="3d" class="" open="false" width="100%">
+						<caption class="">
+							<n:i class="fa fa-edit"></n:i> <label value="Đổi mật khẩu"/> 
+						</caption>
+						<div class="">
+							<div class="form-group">
+								<x:label>Mật khẩu</x:label>
+								<textbox class="form-control" width="100%" type="password" maxlength="255"
+									value="@bind(vm.matKhau2) @save(vm.matKhau2, before='saveNhanVien')" />
+							</div>
+							<div class="form-group">
+								<x:label>Xác nhận mật khẩu</x:label>
+								<textbox class="form-control" width="100%" type="password" maxlength="255"
+									value="@save(vm.matKhau2, before='saveNhanVien') @validator('vn.toancauxanh.vm.BaseValid', password=vm.noId() ? '' : vm.matKhau2)" />
+								<label class="error" value="@load(vmsgs[self.previousSibling])" />
+							</div>
+						</div>
+					</groupbox>
+				</vlayout>
+			</div>		
+			<div class="form-group">
+				<x:label>Email<n:small class="required"> *</n:small></x:label>
+				<textbox class="form-control" width="100%" maxlength="255"
+					value="@bind(vm.email) @save(vm.email, before='saveNhanVien') @validator(vm.validatorEmail)" />
+				<label class="error" value="@load(vmsgs[self.previousSibling])" />
+			</div>
+			<div class="form-group">
+				<x:label>Số điện thoại</x:label>
+				<textbox class="form-control" maxlength="15" width="100%" xmlns:w="client" value="@load(vm.soDienThoai) @save(vm.soDienThoai, before='saveNhanVien')">
+					<attribute w:name="doKeyPress_">
+						function(evt){ if
+						(!this._shallIgnore(evt,"0123456789.-()"))
+						this.$doKeyPress_(evt);
+						}
+					</attribute>
+				</textbox>
+				<label class="error" value="@load(vmsgs[self.previousSibling])" />
+			</div>
+		</div>
+		<div class="col-md-6" if="${(vm.noId() and entry.quyen.nguoidung_them) or (!vm.noId() and entry.quyen.nguoidung_sua)}">
+			<vlayout>
+				<groupbox closable="false" mold="3d" class="mis-group-user mis-mend">
+					<div class="mis-pd10">
+						<listbox model="@bind(entry.vaiTros.vaiTroQuery.fetch())"
+							selectedItems="@bind(vm.vaiTros)"
+							multiple="false" checkmark="true" rows="12">
+							<listhead>
+								<listheader label="Vai trò" ><n:small class="required"> *</n:small></listheader>
+							</listhead>
+							<template name="model">
+								<listitem>
+									<listcell label="${each.tenVaiTro}" />
+								</listitem>
+							</template>
+						</listbox>
+					</div>
+				</groupbox>
+				<label class="error" value="@load(vmsgs['lblErrVaiTros'])" />
+			</vlayout>
+		</div>
+	</div>
+	<!-- action button -->
+	
+	<div class="row box-footer">  		
+		<x:button style="margin-right: 10px;" class="btn btn-success" 
+		 	zk:if="${(vm.noId() and entry.quyen.nguoidung_them) or (!vm.noId() and entry.quyen.nguoidung_sua) or (!vm.noId() and vm.id eq entry.nhanVien.id)}"
+			onClick="@command('saveNhanVien', list=notifyObject, attr='targetQueryNhanVien', wdn=nguoiDungWin)">
+			<n:i class="fa fa-save"></n:i>
+			Lưu 
+		</x:button>
+		<x:button class="btn btn-default" zk:onClick="nguoiDungWin.detach()">
+			Hủy
+		</x:button>
+	</div>
+</window>

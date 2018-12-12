@@ -1,0 +1,134 @@
+<?page title="Thống kê thu chi" contentType="text/html;charset=UTF-8"?>
+<div xmlns:zk="zk" xmlns:n="native" xmlns:x="xhtml"
+	viewModel="@id('vm') @init('vn.toancauxanh.cms.service.ThongKeService')">
+	<zscript><![CDATA[
+		self.page.title= "Thống kê thu chi";
+	]]></zscript>
+	<n:section class="content-header">
+		<n:h1 class="header-title">Thống kê thu chi</n:h1>
+	</n:section>
+	<n:section class="content">
+	    <n:div class="row">
+	    	<n:div class="col-md-12">
+		    	<n:div class="box box-warning margin-box">
+	    			<n:div class="box-header">
+	    				<n:h3 class="box-title">Thống kê theo tháng hoặc theo năm</n:h3>
+	    				<n:div class="box-tools pull-right">
+	    					<n:button type="button" class="btn btn-box-tool" data-widget="collapse"><n:i class="fa fa-minus"></n:i></n:button>
+	    				</n:div>	    				
+	    			</n:div>
+	    			<n:div class="box-body">
+	    				<n:div class="row">
+							<n:div class="col-md-12">
+								<n:div class="col-md-3">
+			    					<n:div class="form-group" >
+			    						<x:label class="control-label">Chọn tháng</x:label>
+			    						<combobox readonly="true" style="display:block" width="99%" model="@load(vm.thangTrongNam)"
+			    							selectedItem="@bind(vm.arg.thang)" placeholder="Chọn tháng">
+		    								<template name="model">
+		    									<comboitem value="@load(each.key)" label="@load(empty each.value ? 'Tất cả các tháng' : each.value)" />
+		    								</template>
+		    							</combobox>
+			    					</n:div>
+			    				</n:div>
+			    				<n:div class="col-md-3">
+			    					<n:div class="form-group" >
+			    						<x:label class="control-label">Chọn năm</x:label>
+		    							<div>
+		    								<spinner value="@bind(vm.year)" constraint="no empty, min 0" width="100%"/>
+		    							</div>
+			    					</n:div>
+			    				</n:div>
+								<n:div class="col-md-6">
+		    						<x:label class="control-label">&#160;</x:label>
+		    						<n:div class="form-group">
+										<x:button class="btn btn-warning" type="button"
+							    			onClick="@command('onThongKeTheoYeuCau', notify=vm)">
+											<n:i class="fa fa-search"></n:i> THỐNG KÊ
+										</x:button>
+										<x:button class="btn btn-success"
+											onClick="@command('xuatExcelThongKe')">
+											<n:i class="fa fa-angle-double-right"></n:i> Xuất file Excel
+										</x:button>
+		    						</n:div>
+		    					</n:div>
+	    					</n:div>
+							<n:div class="col-md-12">
+								<n:div class="col-md-4">
+		    						<x:label class="control-label">&#160;</x:label>
+		    						<n:div class="form-group">
+										<x:label>Tổng thu:&#160;&#160;&#160;</x:label>
+										<label value="@load(vm.tongThuThangHoacNam) @converter('formatedNumber', format='###,###')"
+											style="color: green;"/>
+										<x:label>&#160;&#160;&#160;vnd</x:label>
+		    						</n:div>
+		    					</n:div>
+		    					<n:div class="col-md-4">
+		    						<x:label class="control-label">&#160;</x:label>
+		    						<n:div class="form-group">
+										<x:label>Tổng chi:&#160;&#160;&#160;</x:label>
+										<label value="@load(vm.tongChiThangHoacNam) @converter('formatedNumber', format='###,###')"
+											style="color: red;"/>
+										<x:label>&#160;&#160;&#160;vnd</x:label>
+		    						</n:div>
+		    					</n:div>
+		    					<n:div class="col-md-4">
+		    						<x:label class="control-label">&#160;</x:label>
+		    						<n:div class="form-group">
+										<x:label>Tổng kết:&#160;&#160;&#160;</x:label>
+										<label value="@load(vm.tongThuThangHoacNam - vm.tongChiThangHoacNam) @converter('formatedNumber', format='###,###')"
+											style="color: blue;"/>
+										<x:label>&#160;&#160;&#160;vnd</x:label>
+		    						</n:div>
+		    					</n:div>
+	    					</n:div>
+	    				</n:div>
+		    		</n:div>
+		    	</n:div>
+	    	</n:div>    
+	    </n:div>
+	    <n:div class="row">
+	    	<n:div class="col-md-12">
+		    	<n:div class="box box-info margin-box">
+	    			<n:div class="box-header">
+	    				<n:h3 class="box-title">Tổng kết</n:h3>
+	    				<n:div class="box-tools pull-right">
+	    					<n:button type="button" class="btn btn-box-tool" data-widget="collapse"><n:i class="fa fa-minus"></n:i></n:button>
+	    				</n:div>	    				
+	    			</n:div>
+	    			<n:div class="box-body">
+	    				<n:div class="row">
+							<n:div class="col-md-12">
+	    						<x:label class="control-label">&#160;</x:label>
+	    						<n:div class="form-group">
+									<x:label>Tổng thu:&#160;&#160;&#160;</x:label>
+									<label value="@load(vm.tongTienThu) @converter('formatedNumber', format='###,###')"
+										style="color: green;"/>
+									<x:label>&#160;&#160;&#160;vnd</x:label>
+	    						</n:div>
+	    					</n:div>
+	    					<n:div class="col-md-12">
+	    						<x:label class="control-label">&#160;</x:label>
+	    						<n:div class="form-group">
+									<x:label>Tổng chi:&#160;&#160;&#160;</x:label>
+									<label value="@load(vm.tongTienChi) @converter('formatedNumber', format='###,###')"
+										style="color: red;"/>
+									<x:label>&#160;&#160;&#160;vnd</x:label>
+	    						</n:div>
+	    					</n:div>
+	    					<n:div class="col-md-12">
+	    						<x:label class="control-label">&#160;</x:label>
+	    						<n:div class="form-group">
+									<x:label>Tiền quỹ còn:&#160;&#160;&#160;</x:label>
+									<label value="@load(vm.tongTienThu - vm.tongTienChi) @converter('formatedNumber', format='###,###')"
+										style="color: blue;"/>
+									<x:label>&#160;&#160;&#160;vnd</x:label>
+	    						</n:div>
+	    					</n:div>
+	    				</n:div>
+		    		</n:div>
+		    	</n:div>
+	    	</n:div>    
+	    </n:div>
+	</n:section>
+</div>

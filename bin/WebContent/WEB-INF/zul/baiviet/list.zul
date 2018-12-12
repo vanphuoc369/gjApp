@@ -1,0 +1,205 @@
+<?page title="Quản lý thông báo" contentType="text/html;charset=UTF-8"?>
+<div xmlns:zk="zk" xmlns:n="native" xmlns:x="xhtml" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init('vn.toancauxanh.cms.service.BaiVietService')">
+	<zscript><![CDATA[
+		self.page.title= "Quản lý bài viết";
+	]]></zscript>
+	<n:section class="content-header">
+		<n:h1 class="header-title">Danh sách bài viết</n:h1>
+	</n:section>
+	<n:section class="content">
+	    <n:div class="row">
+	    	<n:div class="col-md-12">
+	    		<n:div class="box box-info margin-box">
+	    			<n:div class="box-header">
+		    			<n:h3 class="box-title">Tìm kiếm</n:h3>
+	    				<n:div class="box-tools pull-right">
+	    					<n:button type="button" class="btn btn-box-tool" data-widget="collapse"><n:i class="fa fa-minus"></n:i></n:button>
+	    				</n:div>	    				
+	    			</n:div>
+	    			<!-- /.box-header -->
+	    			<n:div class="box-body">
+	    				<n:div class="row">
+	    					<n:div class="col-sm-4 col-md-4">
+		    					<div class="form-group">
+									<x:label>Từ khóa</x:label>
+									<textbox class="form-control" value="@bind(vm.arg.tukhoa)" 
+										style="width:99%;display:inline;" placeholder="Nhập tiêu đề hoặc nội dung bài viết"
+										onOK="@command('cmd', notify=vm, attr='*')" />
+								</div>
+							</n:div>
+							<n:div class="col-sm-3 col-md-3">
+								<div class="form-group">
+	    							<x:label>Tác giả</x:label>
+	    							<combobox placeholder="Tác giả"
+										viewModel="@id('vmm') @init('vn.toancauxanh.service.NhanVienService')"
+										model="@load(vmm.tacGiasTimKiem)" value="@load(vm.arg.tacgia eq null ? 'Tất cả' : vm.arg.tacgia.hoVaTen)"
+										selectedItem="@bind(vm.arg.tacgia)" width="99%">
+										<template name="model">
+										    <comboitem label="@load(each eq null ? 'Tất cả' : each.hoVaTen)" > </comboitem>
+										 </template>
+									</combobox>
+								</div>
+							</n:div>
+							<n:div class="col-sm-3 col-md-2">
+								<div class="form-group" >
+	    							<x:label>Xuất bản</x:label>
+	    							<combobox readonly="true" placeholder="Trạng thái xuất bản"
+										model="@load(vm.trangThaiXuatBanList)"
+										value="@load(each.value eq null ? 'Tất cả' : each.value)"
+										selectedItem="@bind(vm.arg.trangthaixuatban)"
+										width="99%">
+										<template name="model">
+											<comboitem value="@load(each.key)" label="@load(each.value eq '      ' ? 'Tất cả' : each.value)" />
+										</template>
+									</combobox>
+								</div>
+							</n:div>
+							<n:div class="col-sm-3 col-md-3">
+								<n:div class="form-group">
+									<x:label>Trạng thái</x:label>
+									<combobox readonly="true"
+										model="@load(vm.trangThaiSoanList)"
+										value="@load(each.value eq null ? 'Tất cả' : each.value)"
+										selectedItem="@bind(vm.arg.trangthaisoan)"
+										width="99%">
+										<template name="model">
+											<comboitem label="@load(each.value eq '      ' ? 'Tất cả' : each.value)" />
+										</template>
+									</combobox>
+								</n:div>
+							</n:div>
+							
+							<n:div class="col-md-4">
+								<div class="form-group" >
+									<x:label>Chủ đề</x:label>
+									<combobox readonly="true"
+										model="@load(entry.categories.listAllCategoryAndNull)"
+										selectedItem="@save(vm.arg.chude)"
+										value="@load(vm.arg.chude eq null ? 'Tất cả' : vm.arg.chude.childName)"
+										width="100%">
+										<template name="model">
+											<comboitem label="@load(each.childName eq null ? 'Tất cả' : each.childName)" />
+										</template>
+									</combobox>
+								</div>
+							</n:div>
+							
+							<n:div class="col-md-2">
+   								<n:div class="form-group" >
+									<x:label>Nổi bật</x:label>
+									<combobox readonly="true" placeholder="Tất cả"
+										model="@load(vm.trangThaiNoiBatList)"
+										value="@load(each.value eq null ? 'Tất cả' : each.value)"
+										selectedItem="@bind(vm.arg.trangthainoibat)"
+										width="99%">
+										<template name="model">
+											<comboitem label="@load(each.value eq '      ' ? 'Tất cả' : each.value)" />
+										</template>
+									</combobox>
+								</n:div>
+							</n:div>
+							<!-- moi row -->
+							
+							<n:div class="col-md-2">
+								<n:div class="form-group" >
+									<x:label>Xuất bản từ</x:label>
+									<datebox format="dd-MM-yyyy" width="99%"
+										sclass="mis-datebox-inner" value="@bind(vm.tuNgay)"/>
+								</n:div>
+							</n:div>
+							<n:div class="col-md-2">
+								<n:div class="form-group" >
+									<x:label>Đến ngày</x:label>
+									<datebox format="dd-MM-yyyy" width="99%"
+										sclass="mis-datebox-inner" value="@bind(vm.denNgay)"/>
+								</n:div>
+							</n:div>
+							
+							<n:div class="col-md-2">
+	    						<x:label class="control-label">&#160;</x:label>
+	    						<n:div class="form-group">
+	    							<x:button class="btn btn-warning" type="button" onClick="@command('cmd', notify=vm, attr='*')" >
+										<n:i class="fa fa-search"></n:i> Tìm kiếm
+									</x:button>
+	    						</n:div>
+	    					</n:div>
+	    				</n:div>
+		    		</n:div>
+    			</n:div>
+    		</n:div>
+    		<n:div class="col-md-12">
+    			<n:div class="box box-success">
+    				<n:div class="box-header">
+	    				<n:h3 class="box-title"></n:h3>
+	    				<n:div class="box-tools pull-right">
+	    					<x:button class="btn btn-success" zk:if="${entry.quyen.baiviet_them}" 
+	    						onClick="@command('redirectPage', zul='baiviet/add.zul', vmArgs=vm, vm=null)">
+    							<n:i class="fa fa-plus"></n:i>&#160;&#160;Thêm mới
+    						</x:button>
+	    				</n:div>
+	    			</n:div>
+	    			<n:div class="box-body">
+    					<n:div class="dataTables_wrapper form-inline dt-bootstrap">
+    						<n:div class="row">
+    							<n:div class="col-md-12">
+    								<grid model="@load(vm.page(vm.targetQuery).fetch())" width="100%" id="grid"
+								emptyMessage="Danh sách không có bài viết nào" class="hidden-xs">
+								<columns>
+									<column label="STT" hflex="min" sclass="text-align-center"/>
+									<column label="Tiêu đề" />
+									<column label="Chủ đề" width="15%" />
+									<column label="Tác giả" width="10%" />
+									<column label="Nổi bật" hflex="min" />
+									<column label="Trạng thái" hflex="min" />
+									<column label="Xuất bản" hflex="min" sclass="text-align-center" />
+									<column label="Ngày xuất bản" hflex="min" />
+									<column label="Thao tác" width="105px" sclass="text-align-center"/>
+								</columns>
+								<template name="model">
+									<row apply="org.zkoss.bind.BindComposer" viewModel="@id('item') @init(each)">
+										<label value="@bind(forEachStatus.index + 1 + vm.arg.page * vm.arg.pagesize)" style="text-align:center;display:block"/>
+										<a label="@load(each.title)" zk:if="${entry.quyen.baiviet_xem || entry.quyen.baiviet_sua}" onClick="@command('redirectPage', zul='baiviet/view.zul',vmArgs=vm,vm=item)" tooltiptext="@load(each.id)"/>
+										<a label="@load(each.title)" zk:if="${!entry.quyen.baiviet_xem and !entry.quyen.baiviet_sua}" tooltiptext="@load(each.id)"/>
+										<label value="@load(each.category.name)"/>
+										<label value="@load(each.author.hoVaTen)"/>
+ 										<n:span class="${each.setStyleNoiBat(each.noiBat)}">${each.noiBatTieuDiem eq null ? '   ' : each.noiBatTieuDiem}</n:span>
+										<n:span class="${each.setStyleStatus(each.trangThaiSoan)}">${each.trangThaiSoan eq null ? '   ' : each.trangThaiSoanText}</n:span>
+										<n:span class="${each.setStylePublishStatus(each.publishStatus)}">${each.publishStatus ? 'Có' : 'Không'}</n:span>
+										<label value="@load(each.publishBeginTime) @converter('formatedDate',format='dd/MM/yyyy')"
+											 style="text-align:center;display:block"/>
+										<div class="text-align-center">
+											<x:button class="btn btn-info btn-xs" zk:if="${entry.quyen.baiviet_sua}"
+												onClick="@command('redirectPage', zul='baiviet/view.zul',vmArgs=vm,vm=item)">
+												<n:i class="fa fa-pencil-square-o"></n:i>
+											</x:button>
+											<x:a class="btn btn-info btn-xs" zk:if="${entry.quyen.baiviet_xem and !entry.quyen.baiviet_sua}"
+												onClick="@command('redirectPage', zul='baiviet/view.zul',vmArgs=vm,vm=item)">
+												<n:i class="fa fa-eye"></n:i>
+											</x:a>
+											<x:button class="btn btn-warning btn-xs" zk:if="${entry.quyen.baiviet_sua}"
+												onClick="@command('copyArticle', vm=item, list=vm, attr='targetQuery')">
+												<n:i class="fa fa-copy"></n:i>
+											</x:button>
+											<x:a class="btn btn-danger btn-xs" zk:if="${entry.quyen.baiviet_xoa}"
+												onClick="@command('deleteTrangThaiConfirmAndNotify', notify=vm, attr='targetQuery')">
+												<n:i class="fa fa-trash-o"></n:i>
+											</x:a>
+										</div>
+									</row>
+								</template>
+							</grid>
+    							</n:div>
+    						</n:div>
+    					</n:div>
+    					<!-- paging -->
+    					<paging pageSize="@load(vm.arg.pagesize)" totalSize="@load(vm.targetQuery.fetchCount())"
+								visible="@load(vm.targetQuery.fetchCount() > vm.arg.pagesize ? true : false)"
+								activePage="@bind(vm.arg.page)" onPaging="@command('cmd', notify=vm, atr='targetQuery')" />
+    					<!-- paging -->
+    				</n:div>
+   				</n:div>
+			</n:div>   
+	    </n:div>
+	</n:section>
+</div>

@@ -1,0 +1,240 @@
+.mis-image-upload {
+	margin-bottom: 5px;
+    background-color: rgb(238, 238, 238);
+    max-height: 150px;
+    object-fit: cover;
+}
+
+.tabbable-line > .nav-tabs > li.open, .tabbable-line > .nav-tabs > li:hover {
+  border-bottom: 4px solid #fbcdcf;
+}
+.tabbable-line > .nav-tabs > li.active {
+  border-bottom: 4px solid #f3565d;
+  position: relative;
+}
+.tabbable-line > .nav-tabs > li.active > a {
+  border: 0;
+  color: #333333;
+}
+.tabbable-line > .nav-tabs > li.active > a > i {
+  color: #404040;
+}
+.file-cmt a {
+	padding-right: 5px;
+	border-right: 1px solid;
+	margin-right: 10px;
+}
+.file-cmt a:last-child {
+	border: none;
+}
+.tabbable-line.tabs-below > .nav-tabs > li:hover {
+  border-bottom: 0;
+  border-top: 4px solid #fbcdcf;
+}
+.tabbable-line.tabs-below > .nav-tabs > li.active {
+  margin-bottom: -2px;
+  border-bottom: 0;
+  border-top: 4px solid #f3565d;
+}
+
+.tabbable-line > .nav-tabs > li > a {
+  border: 0;
+  margin-right: 0;
+  color: #737373;
+}
+.do {
+	background-color: #e9573e !important;
+}
+.vang {
+	background-color: #f7bc48 !important;
+}
+.la {
+	background-color: #8bc251 !important;
+}
+.duong {
+	background-color: #6797d3 !important;
+}
+.text-bold {
+	font-weight: 600;
+}
+.box-success .box-body {
+	min-height: 450px;
+}
+.logo-mobile {
+	display:none;
+}
+.z-temp .z-loading {
+   top: 50%;
+   left: 50%;
+   margin-top: -18px;
+   margin-left: -48px;
+}
+.z-loading-icon {
+	background: url("../img/progress.gif") no-repeat left top;
+}
+.hien-thi-file i{
+	border-right: 1px solid rgb(169, 169, 169);
+    height: 10px;
+    display: inline-block;
+    padding-left: 12px;
+}
+
+.hien-thi-file i:last-child  {
+	display: none;
+}
+@media (max-width: 767px) {	
+.logo-mobile {
+		display: inline;
+	    float: left;
+	    width: calc(100% - 150px);
+	    text-align: center;
+	    padding: 11px;
+	}
+	
+	.logo-mobile span {
+		font-family:SourceSansPro-Bold;
+		font-size:24px;
+		color:#fff;
+		letter-spacing:0;
+		line-height: 28px;
+	}
+}
+
+.z-paging .z-paging-info {
+	display: none;
+}
+
+.margin-box {
+	margin-bottom: 10px;
+}
+
+.box-image {
+	margin-bottom: 5px;
+}
+
+.box-image-title input{
+	width: 100%;
+}
+
+.col-md-3 .rm {
+	position: absolute;
+	top: 0;
+	right: 15px;
+}
+
+.mis-word-break {
+	width: 100%;
+    word-wrap: BREAK-WORD;
+}
+
+.mis-remove-image {
+	min-width: 36px;
+	display: inline-block;
+}
+.box-footer {
+	text-align: center;	
+}
+
+.z-treefooter-content {
+	font-style: italic;
+	text-align: center;
+}
+.item-noti {
+	display: none;
+	border-bottom: 1px solid #dddfe2;
+	clear: both;
+}
+
+.item-noti:hover {
+	background-color: #f3f3f5;
+}
+
+.item-noti-chua {
+	background-color: #edf2fa;
+}
+
+.item-noti-chua:hover {
+	background-color: #f3f3f5;
+}
+
+.item-noti-i {
+	float: left;
+	padding: 10px;
+	font-size: 20px;
+}
+.sider-bar-text {
+	float: left;
+    background-color: transparent;
+    background-image: none;
+    padding: 25px 25px;
+    color: #fff;
+    font-size: 18px;
+}
+.bum-image img {
+	position: absolute;
+	top: -6px;
+	left: -15px;
+	max-width: 85px;
+}
+.main-header .logo .logo-lg {
+	margin-left: 25px;
+	font-size: 18px;
+	font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.main-header .logo {
+	height: 80px;
+	padding: 13px;
+}
+.navbar-custom-menu {
+	padding: 10px;
+}
+.skin-blue .main-sidebar {
+	background-color: #3178A6;
+	margin-top: 30px;
+}
+.skin-blue .sidebar-menu>li:hover>a {
+	background-color: #448EBF;
+}
+.skin-blue .sidebar-menu>li.active>a {
+	background: #448EBF;
+}
+.skin-blue .sidebar-menu>li>.treeview-menu {
+	background: #2f6c94;
+}
+.skin-blue .sidebar a {
+	color: #ffffff;
+}
+.skin-blue .treeview-menu>li>a {
+	color: #b2c3dc;
+}
+.dropdown-toggle .fa-bell-o {
+    padding: 3px;
+	border-radius: 50px 50px;
+    border: 1px solid;
+}
+.notifications-menu a:hover{
+	background: #3c8dbc;
+}
+.sidebar-collapse .sidebar-toggle .lf{
+	display: none;
+}
+.sidebar-toggle .rh{
+	display: none;
+}
+.sidebar-collapse .sidebar-toggle .rh{
+	display: inline;
+}
+.sidebar-toggle {
+	position: absolute; 
+	top: 350px; 
+	right: -10px;
+}
+.aler-notification{
+	width: 80%;
+	border-radius: 15px;
+	margin: 0 auto;
+	text-align: center; 
+	background-color: #d9edf7!important; 
+	border-color: #bce8f1; 
+	color: #3a87ad !important;
+}

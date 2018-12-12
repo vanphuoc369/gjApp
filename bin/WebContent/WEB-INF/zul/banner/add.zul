@@ -1,0 +1,3 @@
+<?component name="add-view" inline="true" macroURI="add-view.zul"?>
+<add-view model="${entry.banners.type().newInstance()}"  vmArgs="${arg.vmArgs}" save="Tạo mới banner" />
+

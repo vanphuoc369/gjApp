@@ -1,0 +1,59 @@
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" id="wdn"
+	border="normal" mode="modal" action="show: slideIn"
+	contentStyle="overflow:auto;" closable="true" title="${arg.save}"
+	onClose="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')"
+	whatever="@load(false,after='saveLyDo') @converter('vn.toancauxanh.service.DetachConverter')"
+	viewModel="@id('vm') @init(arg.model)"
+	validationMessages="@id('vmsgs')" width="450px"
+	form="@id('fx') @load(vm) @save(vm, before={'saveLyDo'})">
+	<zscript>
+			vmArgs = arg.get("vmArgs");
+			strSave = arg.get("save");
+		</zscript>
+		<div class="row box-body">
+			<div zclass="form-group">
+				<hlayout class="control-label">
+					<x:label>Chọn hình thức (thu phí hoặc chi tiêu)</x:label>
+				</hlayout>
+				<radiogroup id="radiogroup" selectedItem="@bind(vm.thu)">
+					<radio hflex="1" checked="@load(vm.thu)" label="Thu phí" value="true"/>
+					<radio hflex="1" checked="@load(!vm.thu)" label="Chi tiêu" value="false"/>
+				</radiogroup>
+			</div>
+			<div zclass="form-group">
+				<hlayout class="control-label">
+					<x:label>Nội dung lý do thu chi<n:small class="required"> *</n:small></x:label>
+				</hlayout>
+				<vlayout>
+					<textbox class="form-control" rows="5" maxlength="1000"
+						value="@bind(vm.content) @save(vm.content, before={'saveLyDo'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" />
+					<label zclass="error" value="@load(vmsgs[self.previousSibling])" />
+				</vlayout>
+			</div>
+			<div zclass="form-group" children="@load(vm.thu)">
+				<template name="children">
+					<n:div zclass="form-group" zk:if="${vm.thu}">
+						<hlayout class="control-label">
+							<x:label>Số tiền thu<n:small class="required"> *</n:small></x:label>
+						</hlayout>
+						<vlayout>
+							<textbox class="form-control"
+								value="@bind(vm.thu)" />
+							<label zclass="error" value="@load(vmsgs[self.previousSibling])" />
+						</vlayout>
+					</n:div>
+				</template>
+			</div>
+		</div>
+		<div class="row box-footer">  		
+			<x:button style="margin-right: 10px;" class="btn btn-success" 
+			 	zk:if="${(vm.noId() and entry.quyen.lydothuchi_them) or (!vm.noId() and entry.quyen.lydothuchi_sua)}"
+				onClick="@command('saveLyDo', list=vmArgs, attr='targetQuery', wdn=wdn)">
+				<n:i class="fa fa-save"></n:i>
+				Lưu 
+			</x:button>
+			<x:button class="btn btn-default" onClick="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')">
+				Hủy
+			</x:button>
+		</div>
+	</window>

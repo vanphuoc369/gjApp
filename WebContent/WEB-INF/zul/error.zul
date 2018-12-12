@@ -1,0 +1,44 @@
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd" >
+ 	
+ 	
+ 	
+	<window title="Thông báo lỗi" 
+		width="400px" mode="modal" closable="true" position="center,top">
+		<zscript>
+		String msg = "";
+		Throwable t = (Throwable) Executions.getCurrent().getAttribute("javax.servlet.error.exception");
+		if (t != null) {
+			t.printStackTrace();
+			if (t.getCause() != null) {
+				t = t.getCause();
+			}
+			if (t instanceof org.hibernate.exception.ConstraintViolationException
+					|| t.getCause() instanceof org.hibernate.exception.ConstraintViolationException) {
+				msg = " Lưu dữ liệu này không được do bị trùng lặp hoặc ràng buộc với dữ liệu đã có.";
+			} else {
+				msg = t.getMessage();
+				import java.io.ByteArrayOutputStream;
+				import java.io.PrintStream;
+				import vn.toancauxanh.service.BasicService;
+				String emailDN = "";
+				BasicService app = new BasicService();
+				try {
+					emailDN = app.nhanVien.tenDangNhap;
+					System.out.println("emailDN: " + emailDN);
+				} catch (Exception ex) {
+					System.out.println("emailDNx: " + emailDN);
+				} 
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			    PrintStream ps = new PrintStream(baos);
+			    t.printStackTrace(ps);
+			    ps.close();
+				//vn.toancauxanh.service.SendEmail.sendEmailGmail("thanhpx1@greenglobal.vn",emailDN + " " + t.getMessage(),baos.toString());
+			}
+		}
+ 	</zscript>
+		<vbox>
+			${msg} ${t}
+		</vbox>
+	</window>
+</zk>

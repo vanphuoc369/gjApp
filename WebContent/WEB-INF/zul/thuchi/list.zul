@@ -1,0 +1,131 @@
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" id="wdn"
+	border="normal" mode="modal" action="show: slideIn"
+	contentStyle="overflow:auto;" closable="true" title="Danh sách thành viên nộp tiền"
+	viewModel="@id('vm') @init(arg.vm)"
+	validationMessages="@id('vmsgs')" width="63%">
+	<zscript>
+		lyDoThuChi = arg.get("vm");
+		vmArgs = arg.get("vmArgs");
+	</zscript>
+	<div>
+		<n:section class="content">
+			<n:div class="row">
+				<n:div class="col-md-12">
+			    		<n:div class="box-tools pull-left">
+	    					<x:button class="btn btn-info"
+	    						onClick="@command('xuatExcelDSNopTien', lydo=lyDoThuChi)">
+	    						<n:i class="fa fa-angle-double-right"></n:i>
+	    						Xuất file Excel
+	    					</x:button>
+	    				</n:div>
+	    		</n:div>
+	    		<n:br></n:br>
+	    		<n:br></n:br>
+	    	</n:div>
+		    <n:div class="row">
+		    	<n:div class="col-md-12">
+			    	<n:div class="box box-warning margin-box">
+			    		<n:div class="box-header">
+			    			<n:h3 class="box-title">Thông tin lý do nộp tiền</n:h3>
+		    				<n:div class="box-tools pull-right">
+		    					<n:button type="button" class="btn btn-box-tool" data-widget="collapse"><n:i class="fa fa-minus"></n:i></n:button>
+		    				</n:div>	    				
+		    			</n:div>
+		    			
+		    			<n:div class="box-body">
+		    				<n:div class="row">
+		    					<n:div class="col-md-8">
+			    					<n:div class="form-group" >
+			    						<x:label class="control-label">Lý do nộp tiền</x:label>
+										<textbox class="form-control" value="@load(lyDoThuChi.content)" readonly="true"/>
+									</n:div>
+								</n:div>
+								<n:div class="col-md-4">
+			    					<n:div class="form-group" >
+			    						<x:label class="control-label">Mức thu (vnd)</x:label>
+			    						<doublebox class="form-control" value="@load(lyDoThuChi.mucThu)" format=",###.#" readonly="true"/>
+			    					</n:div>
+			    				</n:div>
+		    				</n:div>
+			    		</n:div>
+			    	</n:div>
+		    	</n:div>
+		    	<n:div class="col-md-12">
+			    	<n:div class="box box-info margin-box">
+			    		<n:div class="box-header">
+			    			<n:h3 class="box-title">Tìm kiếm</n:h3>
+		    				<n:div class="box-tools pull-right">
+		    					<n:button type="button" class="btn btn-box-tool" data-widget="collapse"><n:i class="fa fa-minus"></n:i></n:button>
+		    				</n:div>	    				
+		    			</n:div>
+		    			
+		    			<n:div class="box-body">
+		    				<n:div class="row">
+		    					<n:div class="col-md-4">
+			    					<n:div class="form-group" >
+			    						<x:label class="control-label">Từ khóa</x:label>
+										<textbox class="form-control" value="@bind(vm.arg.tukhoa)" 
+											style="width:99%;display:inline;" placeholder="Tìm kiếm theo tên thành viên"
+											onOK="@command('onTimTen', notify=vm, lydothuchi=lyDoThuChi)" />
+									</n:div>
+								</n:div>
+								<n:div class="col-md-4">
+		    						<x:label class="control-label">&#160;</x:label>
+		    						<n:div class="form-group">
+										<x:button class="btn btn-warning" type="button"
+							    			onClick="@command('onTimTen', notify=vm, lydothuchi=lyDoThuChi)" >
+											<n:i class="fa fa-search"></n:i> TÌM KIẾM
+										</x:button>
+		    						</n:div>
+		    					</n:div>
+		    				</n:div>
+			    		</n:div>
+			    	</n:div>
+		    	</n:div>
+		    		<!-- /.box-header -->
+	   			<n:div class="col-md-12">
+	    			<n:div class="box box-success">
+		    			<n:div class="box-body">
+	    					<n:div class="dataTables_wrapper form-inline dt-bootstrap">
+	    						<n:div class="row">
+	    							<n:div class="col-md-12">
+	    								<grid model="@load(vm.listThuChi)" width="100%" id="grid" class="hidden-xs"
+	    									emptyMessage="Danh sách không có thành viên nào.">
+											<columns>
+												<column label="STT" hflex="min" sclass="text-align-center"/>
+												<column label="Tên người nộp" width="45%" />
+												<column label="Đã nộp" width="130px" sclass="text-align-center"/>
+												<column label="Số tiền (vnd)" width="27%" />
+											</columns>
+											<template name="model">
+												<row apply="org.zkoss.bind.BindComposer" viewModel="@id('item') @init(each)">
+													<label value="@bind(forEachStatus.index + 1 + vm.arg.page * vm.arg.pagesize)" style="text-align:center;display:block"/>
+													<label value="@load(empty each.nguoiNop.hoVaTen ? 'Người khác' : each.nguoiNop.hoVaTen)"/>
+													<cell sclass="text-align-center">
+														<checkbox checked="@bind(each.daNop)" />
+													</cell>
+													<doublebox value="@bind(each.soTienNop)" format=",###.#" readonly="${lyDoThuChi.mucThu eq 0 ? false : true}" instant="true"/>
+												</row>
+											</template>
+										</grid>
+	    							</n:div>
+	    						</n:div>
+	    					</n:div>
+	    				</n:div>
+	   				</n:div>
+	   			</n:div>    
+		    </n:div>
+		</n:section>
+	</div>
+		<div class="row box-footer">  		
+			<x:button style="margin-right: 10px;" class="btn btn-success" 
+			 	zk:if="${entry.quyen.thuchi_sua}"
+				onClick="@command('saveThuTien', list=vmArgs, attr='targetQueryThu', lydothuchi=lyDoThuChi, wdn=wdn)">
+				<n:i class="fa fa-save"></n:i>
+				Lưu 
+			</x:button>
+			<x:button class="btn btn-default" onClick="@command('closeModal', detach=wdn)">
+				Đóng
+			</x:button>
+		</div>
+</window>

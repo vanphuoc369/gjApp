@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<infinispan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="urn:infinispan:config:7.2"
+	xsi:schemaLocation="urn:infinispan:config:7.2 http://www.infinispan.org/schemas/infinispan-config-7.2.xsd">
+
+	<cache-container default-cache="the-default-cache">
+		<jmx duplicate-domains="true">
+			<property name="enabled">false</property>	
+		</jmx>
+		<local-cache name="the-default-cache">
+			<locking isolation="READ_COMMITTED" concurrency-level="1000"
+				acquire-timeout="15000" striping="false" />
+			<transaction mode="NONE" />
+<!-- 			<eviction max-entries="1000" strategy="LRU" /> -->
+			<expiration max-idle="100000" interval="5000" />
+		</local-cache>
+
+		<local-cache name="entity">
+			<locking isolation="READ_COMMITTED" concurrency-level="1000"
+				acquire-timeout="15000" striping="false" />
+			<transaction mode="NONE" />
+			<eviction max-entries="1000" strategy="LRU" />
+			<expiration max-idle="100000" interval="5000" />
+		</local-cache>
+
+		<local-cache name="local-query">
+			<locking isolation="READ_COMMITTED" concurrency-level="1000"
+				acquire-timeout="15000" striping="false" />
+			<transaction mode="NONE" />
+			<eviction max-entries="1000" strategy="LRU" />
+			<expiration max-idle="100000" interval="5000" />
+		</local-cache>
+
+		<local-cache name="timestamps">
+			<locking isolation="READ_COMMITTED" concurrency-level="1000"
+				acquire-timeout="15000" striping="false" />
+			<transaction mode="NONE" />
+			<eviction strategy="NONE" />
+			<expiration interval="0" />
+		</local-cache>
+	</cache-container>
+</infinispan>

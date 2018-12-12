@@ -1,0 +1,10 @@
+<factorypath>
+    <factorypathentry kind="WKSPJAR" id="/gjapp/lib/hibernate-jpa-2.1-api-1.0.0.Final.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="WKSPJAR" id="/gjapp/lib/guava-20.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="WKSPJAR" id="/gjapp/lib/codegen-0.6.8.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="WKSPJAR" id="/gjapp/lib/querydsl-apt.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="WKSPJAR" id="/gjapp/lib/javax.inject-1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="WKSPJAR" id="/gjapp/lib/querydsl-codegen.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="WKSPJAR" id="/gjapp/lib/querydsl-jpa-apt.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="WKSPJAR" id="/gjapp/lib/querydsl-core.jar" enabled="true" runInBatchMode="false"/>
+</factorypath>

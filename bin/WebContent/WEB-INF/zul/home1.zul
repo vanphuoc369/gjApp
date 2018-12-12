@@ -1,0 +1,257 @@
+<!-- Bootstrap 3.3.6 -->
+<?style href="/backend/admin-lte/bootstrap/css/bootstrap.css" type="text/css" ?>
+<!-- Font Awesome -->
+<?style href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css" ?>
+<!-- Ionicons -->
+<?style href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" type="text/css" ?>
+<!-- jvectormap -->
+<?style href="/backend/admin-lte/plugins/jvectormap/jquery-jvectormap-1.2.2.css" type="text/css" ?>
+<!-- Theme style -->
+<?style href="/backend/admin-lte/dist/css/AdminLTE.css" type="text/css" ?>
+<!-- Custom style zk -->
+<?style href="/backend/admin-lte/dist/css/custom.css" type="text/css" ?>
+<!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
+<?style href="/backend/admin-lte/dist/css/skins/_all-skins.min.css" type="text/css" ?>
+<!-- Toastr css -->
+<?style href="/backend/toastr/build/toastr.css" type="text/css" ?>
+<!-- Pace style -->
+<?style href="/backend/admin-lte/plugins/pace/pace.min.css" type="text/css" ?>
+<!-- HĐND Hòa Vang custom -->
+<?style href="/backend/assets/css/hdnd-hoavang.css" type="text/css" ?>
+
+<?page title="HĐND Hòa Vang" contentType="text/html;charset=UTF-8"?>
+<?meta http-equiv="X-UA-Compatible" content="IE=edge"?>
+<?link rel="icon" href="/img/favicon.png" type="image/x-icon" ?>
+<?meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"?>
+
+<zk xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" >
+<!-- jQuery 2.2.0 -->
+<!-- <script type="text/javascript" src="/backend/admin-lte/plugins/jQuery/jQuery-2.2.0.min.js" defer="true"></script> -->
+<!-- 3.3.6 -->
+<script type="text/javascript" src="/backend/admin-lte/bootstrap/js/bootstrap.js" />
+<!-- FastClick -->
+<script type="text/javascript" src="/backend/admin-lte/plugins/fastclick/fastclick.js" />
+<!-- SlimScroll 1.3.0 -->
+<script type="text/javascript" src="/backend/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js" />
+<!-- AdminLTE for demo purposes -->
+<script type="text/javascript" src="/backend/admin-lte/dist/js/demo.js" />
+<!-- AdminLTE App -->
+<script type="text/javascript" src="/backend/admin-lte/dist/js/app.js" defer="true"/>
+<!-- Toastr js -->
+<script type="text/javascript" src="/backend/toastr/build/toastr.min.js" />
+<!-- PACE -->
+<script type="text/javascript" src="/backend/admin-lte/plugins/pace/pace.min.js" />
+
+	<div class="hold-transition skin-blue sidebar-mini">
+		<zscript><![CDATA[
+			entry = new vn.toancauxanh.service.BaseObject().core();
+			nhanVien = entry.getNhanVien();
+			int testValue = 4;
+			String resource = execution.getParameter("resource");
+			String action = execution.getParameter("action");
+			String macDinh = execution.getParameter("macdinh");
+			String backurl = execution.getParameter("backurl");
+			String file = execution.getParameter("file");
+			String ctxPath = execution.getContextPath();
+			String serverName = execution.getServerName() + "";
+			String serverPort = execution.getServerPort() + "";
+			String urlImage = "http://" + serverName + ":" + serverPort + "/" + ctxPath;
+			boolean coquyen = entry.quyen.get(resource + "_" + action);
+			dakhoa = entry.nhanVienDaKhoa;
+			chuakhoa = !entry.nhanVienDaKhoa;
+			chuakichhoat = entry.nhanVienDaKichHoat;
+			dakichhoat = entry.nhanVienDaKichHoat;
+			boolean noiDungActived = entry.noiDungActive.contains(resource);
+		]]></zscript>
+		<div class="wrapper">
+			<n:header class="main-header">
+			    <!-- Logo -->
+			    <n:a href="${ctxPath}/cp/" class="logo hidden-xs">
+			    	<div class="bum-image">
+			    		<n:img src="${urlImage}/backend/assets/img/logoAD.tH2ifU" class="img-circle" alt="User Image" />
+			    	</div>
+			      	<!-- logo for regular state and mobile devices -->
+			      	<n:span class="logo-lg"><n:b>Java devision</n:b></n:span>
+			    </n:a>
+			
+			    <!-- Header Navbar: style can be found in header.less -->
+			    <n:nav class="navbar navbar-static-top">
+				    <!-- Sidebar toggle button-->
+				    <n:span class="sider-bar-text">Java devision</n:span>	
+				    <div class="logo-mobile">
+				    	<n:span class="">Java devision</n:span>				    	
+				    </div>
+				    
+			      	<!-- Navbar Right Menu -->
+			      	<div class="navbar-custom-menu" viewModel="@id('vm') @init(nhanVien)">
+				        <n:ul class="nav navbar-nav">
+				          	<!-- User Account: style can be found in dropdown.less -->
+				          	<n:li class="dropdown user user-menu">
+					            <n:a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+					              	<n:img src="${urlImage}/backend/admin-lte/dist/img/user1-128x128.png" class="user-image" alt="User Image" />
+					              	<n:span class="hidden-xs">${nhanVien.hoVaTen}</n:span>
+					            </n:a>
+				            	<n:ul class="dropdown-menu">
+				              		<!-- User image -->
+				              		<n:li class="user-header">
+				                		<n:img src="${urlImage}/backend/admin-lte/dist/img/user1-128x128.png" class="img-circle" alt="User Image" />
+				                		<n:p>${nhanVien.hoVaTen}</n:p>
+				                		<n:p>${nhanVien.donVi ne null ? nhanVien.donVi.ten : ''}</n:p>
+				              		</n:li>
+				              		<!-- Menu Footer-->
+				              		<n:li class="user-footer">
+				                		<n:div class="pull-left">
+				                  			<a class="btn btn-success btn-flat"
+				                  				zk:onClick="@command('redirectPage', zul='nguoidung/edit.zul',vmArgs=vm,vm=nhanVien)">
+				                  				Thay đổi thông tin
+				                  			</a>
+			                			</n:div>
+			                			<n:div class="pull-right">
+			                  				<a apply="org.zkoss.bind.BindComposer" viewModel="@id('vm2') @init(entry.nhanViens)"
+			                  					onClick="@command('logout')" class="btn btn-success btn-flat">Đăng xuất</a>
+				                		</n:div>
+				              		</n:li>
+				            	</n:ul>
+				          	</n:li>
+				        </n:ul>
+			      	</div>
+				</n:nav>
+			</n:header>
+		  	<!-- Left side column. contains the logo and sidebar -->
+		  	<n:aside class="main-sidebar" >
+			    <n:a href="javascript:void(0)"
+			    	class="sidebar-toggle" data-toggle="offcanvas" role="button">
+				    	<n:i class="fa fa-caret-left lf " style="font-size: 25px;"></n:i>
+				    	<n:i class="fa fa-caret-right rh " style="font-size: 25px;"></n:i>
+				    </n:a>
+		    	<!-- sidebar: style can be found in sidebar.less -->
+	    		<n:section class="sidebar">
+		      		<!-- Sidebar user panel -->
+			      				      
+			      	<!-- /.search form -->
+			      	<!-- sidebar menu: : style can be found in sidebar.less -->
+			      	<n:ul class="sidebar-menu">
+			      		<n:li zk:if="${chuakhoa and chuakichhoat and (entry.quyen.chude_lietke || entry.quyen.baiviet_lietke || entry.quyen.chudevideo_lietke
+			      			|| entry.quyen.banner_lietke)}"
+			      			class="${resource eq 'chude' || resource eq 'baiviet' || resource eq 'banner' ? 'active' : ''}">
+			      			<n:a href="javascript:void(0)">
+					        	<n:i class="fa fa-newspaper-o"></n:i> <n:span>Quản lý Website</n:span> <n:i class="fa fa-angle-left pull-right"></n:i>
+					        </n:a>
+					        <n:ul class="treeview-menu">
+			          			<n:li zk:if="${entry.quyen.baiviet_lietke}" class="${resource eq 'baiviet' ? 'active' : ''}">
+									<n:a href="${ctxPath}/cp/baiviet">
+										<n:i class="fa fa-gear"></n:i> Quản lý bài viết
+									</n:a>
+								</n:li>
+			          			<n:li zk:if="${entry.quyen.chude_lietke}" class="${resource eq 'chude' ? 'active' : ''}">
+									<n:a href="${ctxPath}/cp/chude">
+									<n:i class="fa fa-gear"></n:i> Quản lý chủ đề
+									</n:a>
+								</n:li>
+								<n:li zk:if="${entry.quyen.banner_lietke}" class="${resource eq 'banner' ? 'active' : ''}">
+									<n:a href="${ctxPath}/cp/banner">
+									<n:i class="fa fa-gear"></n:i> Quản lý banner
+									</n:a>
+								</n:li>	
+			          		</n:ul>
+			      		</n:li>
+		        		<n:li zk:if="${chuakhoa and chuakichhoat and (entry.quyen.donvi_lietke 
+		        			|| entry.quyen.nguoidung_lietke || entry.quyen.vaitro_lietke)}" 
+		        			class="${resource eq 'donvi' || resource eq 'nguoidung' || resource eq 'vaitro' ? 'active' : ''}">
+					        <n:a href="javascript:void(0)">
+					        	<n:i class="fa fa-users"></n:i> <n:span>Người dùng</n:span> <n:i class="fa fa-angle-left pull-right"></n:i>
+					        </n:a>
+			          		<n:ul class="treeview-menu">
+				            	<n:li zk:if="${entry.quyen.nguoidung_lietke}" class="${resource eq 'nguoidung' ? 'active' : ''}">
+									<n:a href="${ctxPath}/cp/nguoidung"><n:i class="fa fa-user"></n:i> Người dùng</n:a>
+								</n:li>
+								<n:li zk:if="${entry.quyen.vaitro_lietke}" class="${resource eq 'vaitro' ? 'active' : ''}">
+									<n:a href="${ctxPath}/cp/vaitro"><n:i class="fa fa-gear"></n:i> Vai trò</n:a>
+								</n:li>
+								<n:li zk:if="${entry.quyen.donvi_lietke}" class="${resource eq 'donvi' ? 'active' : ''}">
+									<n:a href="${ctxPath}/cp/donvi"><n:i class="fa fa-gear"></n:i> Đơn vị</n:a>
+								</n:li>
+			          		</n:ul>
+		        		</n:li>
+			      	</n:ul>
+			      	<n:ul class="sidebar-menu">
+					    
+			      	</n:ul>
+			    </n:section>
+			    <!-- /.sidebar -->
+		  	</n:aside>
+		
+		 	<!-- Content Wrapper. Contains page content -->
+		  	<n:div class="content-wrapper">
+			    <include if="${coquyen and !dakhoa and dakichhoat}" instant="true" src="${file}"></include>
+				<n:session zk:if="${!(coquyen and !dakhoa and dakichhoat)}">
+					<div style="height: 30px;">
+					</div>
+					<div class="alert aler-notification">
+						<label if="${!coquyen and !dakhoa and dakichhoat}">Bạn không có quyền truy cập chức năng này !</label>
+						<label if="${dakhoa and dakichhoat}">Tài khoản của bạn đã bị khóa!</label>
+						<label if="${!dakhoa and !dakichhoat}">Tài khoản của bạn chưa được kích hoạt!</label>
+						<label if="${dakhoa and !dakichhoat}">Tài khoản của bạn đã bị khóa và chưa được kích hoạt!</label>
+					</div>
+				</n:session>
+		  	</n:div>
+		  	<!-- /.content-wrapper -->
+		
+		  	<!-- /.control-sidebar -->
+		  	<!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
+		  	<n:div class="control-sidebar-bg"></n:div>
+		</div>
+		<!-- ./wrapper -->
+	</div>
+	<n:script>
+		$(document).ajaxStart(function() { Pace.restart(); });
+	</n:script>
+	<n:script>
+		$(function() {
+		    var oldAlert = jq.alert;
+			jq.alert = function (msg, opts) {
+				if (!msg.indexOf('the request was rejected because its size')) {
+					msg = msg.replace('the request was rejected because its size (', '');
+					msg = msg.replace(') exceeds the configured maximum (', '_');
+					msg = msg.replace(')', '');
+					var v2 = msg.substring(msg.indexOf('_')+1, msg.length);
+					var n2 = (parseInt(v2)/1024/ 1024).toFixed(2) + 'MB';
+					newMsg = "File upload có dung lượng vượt quá " + n2;
+					opts.title = "Lỗi";
+					toastrError(newMsg,"");
+					//oldAlert(newMsg, opts);
+				} else if (!msg.indexOf('The request was rejected because the file size')) {
+					msg = msg.replace('The request was rejected because the file size (', '');
+					msg = msg.replace(') exceeds the configured maximum (', '_');
+					msg = msg.replace(')', '');
+					var v2 = msg.substring(msg.indexOf('_')+1, msg.length);
+					//var n2 = (parseInt(v2)/1024/ 1024).toFixed(2) + 'MB';
+					newMsg = "File upload có dung lượng vượt quá " + v2;
+					opts.title = "Lỗi";
+					toastrError(newMsg,"");
+					//oldAlert(newMsg, opts);
+				} else {
+					oldAlert(msg, opts);
+				}
+			}
+		});
+		$(".item-noti").slice(0, 10).show();
+		$('#loadMore').on('click', function(e) {
+	   		e.stopPropagation();
+	    });
+		$("#loadMore").on('click', function (e) {
+	       $(".notifications-menu").addClass("open");
+	       $(".item-noti:hidden").slice(0, 10).slideDown();
+	       if ($(".item-noti:hidden").length == 0) {
+	           $("#load").fadeOut('slow');
+	       }
+	       $(".noti").animate({
+	           scrollTop: 200
+	       }, 1000);
+	       console.log($(".item-noti:hidden").length);
+	       if($(".item-noti:hidden").length == 0) {
+	       	  $("#loadMore").hide();
+	       }
+	   });
+	</n:script>
+</zk>

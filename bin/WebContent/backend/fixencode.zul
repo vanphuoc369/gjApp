@@ -1,0 +1,9 @@
+<!-- <?variable-resolver class="org.zkoss.spring.DelegatingVariableResolver"?> -->
+<zk>
+<zscript>
+<![CDATA[
+		entry = new vn.toancauxanh.service.BaseObject().core(); 	
+		entry.articles.updateContentArticleToUTF8();
+]]>
+</zscript>
+</zk>

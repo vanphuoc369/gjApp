@@ -1,0 +1,2 @@
+<?component name="chung" inline="true" macroURI="chung.zul"?>
+<chung model="${entry.vaiTros.type().newInstance()}" save="Tạo mới vai trò" notify="${arg.vmArgs}"/>

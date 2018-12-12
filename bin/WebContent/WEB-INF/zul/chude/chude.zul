@@ -1,0 +1,3 @@
+<?component name="chudecommon" inline="true" macroURI="chudecommon.zul"?>
+<chudecommon model="${entry.categories.type().newInstance()}"  vmArgs="${arg.vmArgs}" save="Tạo mới chủ đề con" isAdd="true"
+	node="${arg.node}" tree="${arg.tree}"  catSelected="${arg.catSelected}" />

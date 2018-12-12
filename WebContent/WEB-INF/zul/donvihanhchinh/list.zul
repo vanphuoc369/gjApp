@@ -1,0 +1,111 @@
+<?page title="Quản lý thông báo" contentType="text/html;charset=UTF-8"?>
+<div xmlns:zk="zk" xmlns:n="native" xmlns:x="xhtml" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init('vn.toancauxanh.cms.service.DonViHanhChinhService')">
+	<zscript><![CDATA[
+		self.page.title= "Quản lý danh mục đơn vị hành chính";
+		donViHanhChinhs = entry.donViHanhChinhs;
+	]]></zscript>
+	<n:section class="content-header">
+		<n:h1 class="header-title">Danh mục đơn vị hành chính</n:h1>
+	</n:section>
+	<n:section class="content">
+	    <n:div class="row">
+	    	
+	    	<n:div class="col-md-12">
+	    		<n:div class="box box-solid">
+	    			<n:div class="box-header box-header-ds">
+	    				<n:h3 class="box-title">TÌM KIẾM</n:h3>	    				
+	    			</n:div>
+	    			<!-- /.box-header -->
+	    			<n:div class="box-body box-body-ds box-body-ds2 box-danh-muc">
+    					<n:div class="row">
+    						<n:div class="col-md-12 box-search">
+    							<div class="row">    								
+    								<div class="col-lg-12">
+			    						<div class="row">
+			    							<div class="col-lg-4 col-sm-4">
+					    						<div class="form-group" >
+													<textbox class="form-control" value="@bind(vm.arg.tukhoa)" 
+														style="width:100%;display:inline;" placeholder="Từ khóa"
+														onOK="@command('cmd', notify=vm, attr='*')" />
+												</div>
+					    					</div>
+			    						
+					    					<div class="col-lg-2 col-sm-4">
+					    						<x:button class="btn btn-warning" type="button"
+									    			onClick="@command('cmd', notify=vm, attr='*')" >
+													<n:i class="fa fa-search"></n:i> TÌM KIẾM
+												</x:button>
+					    					</div>				    					
+			    						</div>
+			    					</div>
+			    						  
+    							</div>
+    						</n:div>
+    						<n:div class="col-md-12 box-result">    						
+    							<n:div class="box box-solid">					    			
+					    			<!-- /.box-header -->
+					    			<n:div class="box-body box-body-ds">
+				    					<n:div class="row">
+				    						<n:div class="col-md-12">
+				    							<tree id="tree" model="@bind(vm.model)" rows="11" >
+				    								<treecols sizable="false">
+				    									<treecol label="Tên" width="100%"></treecol>
+				    									<treecol label="Dân số" width="80px"></treecol>
+				    									<treecol label="Trạng thái" hflex="min"></treecol>
+				    									<treecol label="Thao tác" width="80px"></treecol>
+				    								</treecols>
+				    								<template name="model" var="node">
+				    									<treeitem open="false">
+				    										<treerow apply="org.zkoss.bind.BindComposer"
+				    											viewModel="@id('vmchild') @init(node.data)">
+				    											<treecell>
+				    												<label value="@load(vmchild.ten)"></label>
+				    											</treecell>
+				    											<treecell>
+				    												<label value="@load(vmchild.danSo) @converter('formatedNumber',format='#,##0')"/>
+				    											</treecell>
+																<treecell class="text-align-center">
+																	<label value="@load(vmchild.trangThaiText)" zclass="@load(vmchild.trangThai eq 'ap_dung' ? 'doi-tuong-blue' : 'doi-tuong-red')"/>
+																</treecell>
+																<treecell>
+																	<x:button zk:if="${entry.quyen.donvihanhchinh_them and vmchild.capDonVi ne 3}" class="btn btn-success btn-xs" title="Thêm con"
+																		onClick="@command('redirectCatagory', zul='donvihanhchinh/chude.zul', vmArgs=vm, node=node, tree=tree.getModel(),catSelected=vmchild)">
+																		<n:i class="fa fa-plus"></n:i> 
+																	</x:button>
+																	<x:button zk:if="${entry.quyen.donvihanhchinh_sua}" class="btn btn-info btn-xs"
+																		onClick="@command('redirectCatagory', zul='donvihanhchinh/view.zul', vmArgs=vm, node=node, tree=tree.getModel(),catSelected=vmchild)"
+																		 title="Sửa">
+																		<n:i class="fa fa-edit"></n:i>
+																	</x:button>
+																	<x:button zk:if="${entry.quyen.donvihanhchinh_xem and !entry.quyen.donvihanhchinh_sua}" class="btn btn-info btn-xs"
+																		onClick="@command('redirectPage', zul='donvihanhchinh/view.zul', vmArgs=vm, vm=vmchild)" title="Xem">
+																		<n:i class="fa fa-eye"></n:i>
+																	</x:button>
+																	<x:button zk:if="${entry.quyen.donvihanhchinh_xoa and !vmchild.macDinh}" class="btn btn-danger btn-xs" title="Xóa"
+																		onClick="@command('deleteDVHC', node=node, tree=tree.getModel(), catSelected=vmchild)">
+																		<n:i class="fa fa-trash"></n:i>
+																	</x:button>
+																</treecell>
+															</treerow>
+														</treeitem>
+													</template>
+												</tree>
+				    							<div class="div-add-action" zk:if="${entry.quyen.donvihanhchinh_them}">
+				    								<x:a class="btn-trong-suot" 
+				    									onClick="@command('redirectPage', zul='donvihanhchinh/add.zul', vmArgs=vm, vm=null)">
+						    							<n:i class="fa fa-plus"></n:i>&#160;&#160;Thêm mới
+						    						</x:a>
+				    							</div>   				
+				    						</n:div>
+				    					</n:div>
+				    				</n:div>
+				    			</n:div>
+    						</n:div>
+    					</n:div>
+    				</n:div>
+    			</n:div>
+    		</n:div>	    
+	    </n:div>
+	</n:section>
+</div>

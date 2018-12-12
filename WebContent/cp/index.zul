@@ -1,0 +1,6 @@
+<zk>
+	<zscript>
+		desktop.setCurrentDirectory("/cp");
+		Executions.forward("/cp");
+	</zscript>
+</zk>

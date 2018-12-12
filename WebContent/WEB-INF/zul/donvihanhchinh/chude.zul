@@ -1,0 +1,3 @@
+<?component name="chudecommon" inline="true" macroURI="chudecommon.zul"?>
+<chudecommon model="${entry.donViHanhChinhs.type().newInstance()}"  vmArgs="${arg.vmArgs}" save="Tạo mới đơn vị hành chính" isAdd="true"
+	node="${arg.node}" tree="${arg.tree}"  catSelected="${arg.catSelected}" />

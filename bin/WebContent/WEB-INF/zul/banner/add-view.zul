@@ -1,0 +1,99 @@
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk"
+	id="wdn" border="normal" mode="modal" action="show: slideIn"
+	contentStyle="overflow:auto;" closable="true" title="${arg.save}"
+	onClose="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')"
+	whatever="@load(false,after='saveBanner') @converter('vn.toancauxanh.service.DetachConverter')"
+	viewModel="@id('vm') @init(arg.model)" validationMessages="@id('vmsgs')" width="800px"
+	form="@id('fx') @load(vm) @save(vm, before={'saveBanner'}) @validator(vm.validatorBanner)">
+		<zscript>
+			vmArgs = arg.get("vmArgs");
+			strSave = arg.get("save");
+			import java.awt.*;
+    		import java.awt.image.*;
+    		import java.awt.geom.*;
+			BufferedImage imagevar2 = new BufferedImage(400, 300, BufferedImage.TYPE_INT_ARGB); 
+		</zscript>
+		<div class="row box-body">
+				<div zclass="col-lg-8">
+					<div zclass="form-group">
+						<hlayout class="control-label">
+							<x:label>Tiêu đề<n:small class="required"> *</n:small></x:label>
+						</hlayout>
+						<vlayout>
+							<textbox class="form-control" width="100%" maxlength="255"
+								value="@bind(vm.title) @save(vm.title, before={'saveBanner'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" />
+							<label zclass="error"
+								value="@load(vmsgs[self.previousSibling])" />
+						</vlayout>
+					</div>
+					<div zclass="form-group">
+						<x:label class="control-label">Mô tả</x:label>
+						<textbox class="form-control" rows="5" maxlength="255"
+							value="@bind(vm.description)" />
+					</div>
+					<div zclass="form-group">
+						<hlayout class="control-label">
+							<x:label>Liên kết<n:small class="required"> *</n:small></x:label>
+						</hlayout>
+						<vlayout>
+							<textbox class="form-control" width="100%" maxlength="255"
+								value="@bind(vm.bannerLink) @save(vm.bannerLink, before={'saveBanner'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" />
+							<label zclass="error"
+								value="@load(vmsgs[self.previousSibling])" />
+						</vlayout>
+					</div>
+					<div zclass="form-group">
+						<div class="row">
+						<div class="col-sm-3 col-md-3 col-lg-3">
+							<checkbox  label="Áp dụng" checked="@bind(vm.checkApDung)" />
+						</div>
+						<div class="col-sm-9 col-md-9 col-lg-9">
+							<checkbox  label="Click để mở tab mới" checked="@bind(vm.newTab)" />
+						</div>
+						</div>
+					</div>
+				</div>
+				<div zclass="col-lg-4">
+					<div zclass="form-group" class="control-label">
+						<x:label >Hình ảnh<n:small class="required"> *</n:small></x:label>
+						<div class="wd-image-box">
+							<image id="imageCmp" width="100%" height="@load(vm.imageContent eq null ? '110px' : '')"
+								sclass="mis-image-upload"
+								content="@bind(vm.imageContent eq null ? imagevar2 : vm.imageContent ) @save(vm.imageContent, before='saveBanner')" style="margin-bottom: 5px;background-color: rgb(238, 238, 238);" >
+							</image>
+							<label zclass="error"
+								value="@load(vmsgs['error'])" />
+						</div>
+						<div zclass="form-group wd-vmargin-space">
+							<hlayout>
+								<button label="Chọn hình"
+									sclass="mis-btn-group mis-btn-lucent" upload="true,maxsize=10000,accept=.png|.jpg"
+									onUpload="@command('attachImages',media=event.media,vmsgs=vmsgs)"
+									image="/img/icon_upload.png" />
+		
+								<a href="#" sclass="mis-remove-image"
+									visible="@load(!empty vm.imageContent)"
+									onClick="@command('deleteImg')">
+									<n:i class="fa fa-trash-o"> </n:i>
+										Xóa
+								</a>
+							</hlayout>
+							<n:small>*Hỗ trợ định dạng *.png, *.jpg, tối đa 10MB</n:small>
+						</div>
+					</div>
+				</div>
+			<!-- /.col-lg-12 -->
+		</div>
+		<div class="row box-footer">  		
+			<x:button style="margin-right: 10px;" class="btn btn-success" 
+			 	zk:if="${(vm.noId() and entry.quyen.banner_them) or (!vm.noId() and entry.quyen.banner_sua)}"
+				onClick="@command('saveBanner', list=vmArgs, attr='targetQuery', wdn=wdn)">
+				<n:i class="fa fa-save"></n:i>
+				Lưu 
+			</x:button>
+			<x:button class="btn btn-default" onClick="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')">
+				Hủy
+			</x:button>
+		</div>
+	</window>
+

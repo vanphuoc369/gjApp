@@ -1,0 +1,107 @@
+<idspace>
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" apply="org.zkoss.bind.BindComposer"
+	id="wdn" border="normal" mode="modal" action="show: slideIn"
+	contentStyle="overflow:auto;" closable="true" title="${arg.save}"
+	onClose="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')"
+	whatever="@load(false,after='saveToDanPho') @converter('vn.toancauxanh.service.DetachConverter')"
+	viewModel="@id('vm') @init(arg.model)" validationMessages="@id('vmsgs')" width="500px">
+	
+		<zscript><![CDATA[
+			vmArgs = arg.get("vmArgs");
+			strSave = arg.get("save");
+			donViHanhChinhs = entry.donViHanhChinhs;
+		]]></zscript> 
+		
+	<div class="row box-body">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<x:label>Tỉnh/Thành</x:label>
+						<combobox width="100%" model="@load(donViHanhChinhs.listDonViDaNang)"
+							readonly="true" disabled="true"
+							value="@load(vm.thanhPho.ten)" 
+							selectedItem="@load(vm.thanhPho) @save(vm.thanhPho, before='saveToDanPho') "
+							placeholder="Chọn tỉnh/thành" >
+							<template name="model">
+								<comboitem label="@load(empty each? 'Chọn tỉnh/thành' :  each.ten)" />
+							</template>
+						</combobox>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<x:label>Quận/Huyện</x:label>
+						<combobox width="100%" readonly="true" value="Huyện Hòa Vang" disabled="true"
+							selectedItem="@load(vm.quan) @save(vm.quan, before='saveDonVi') 
+								@bind(donViHanhChinhs.selectedDVHCQuanHuyen)"
+							placeholder="Chọn quận/huyện" >
+							<attribute name="onCreate">
+								if (vm.quan != null) {
+									donViHanhChinhs.setSelectedDVHCQuanHuyen(vm.quan);
+								}							
+							</attribute>
+							<attribute name="onSelect">
+								cbbPhuongXa.setRawValue(null);
+							</attribute>
+						</combobox>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<x:label>Phường/Xã</x:label>
+						<combobox width="100%" model="@load(donViHanhChinhs.listPhuongXaHoaVangAndNull)"
+							readonly="true" id="cbbPhuongXa"
+							value="@load(vm.phuong ne null ? vm.phuong.ten : 'Chọn phường/xã')" 
+							selectedItem="@load(vm.phuong) @save(vm.phuong, before='saveDonVi')"
+							placeholder="Chọn phường/xã" >
+							<template name="model">
+								<comboitem label="@load(empty each? 'Chọn phường/xã' :  each.ten)" />
+							</template>
+						</combobox>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<x:label>Đơn vị cha</x:label>
+						<combobox width="100%" model="@load(vmArgs.listDonViChaAndNull)"
+							readonly="true" 
+							value="@load(vm.cha ne null ? vm.cha.ten : 'Chọn đơn vị cha')" 
+							selectedItem="@load(vm.cha) @save(vm.cha, before='saveDonVi')"
+							placeholder="Chọn đơn vị cha" >
+							<template name="model">
+								<comboitem label="@load(empty each? 'Chọn đơn vị cha' :  each.ten)" />
+							</template>
+						</combobox>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<x:label>Tên đơn vị<n:small class="required"> *</n:small></x:label>
+						<textbox class="form-control" maxlength="255"
+							value="@load(vm.ten) @save(vm.ten, before='saveDonVi') 
+							@validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')"/>
+						<label class="error" value="@load(vmsgs[self.previousSibling])" />
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<checkbox label="Áp dụng" checked="@bind(vm.checkApDung)" />
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
+	
+	<div class="row box-footer">
+		<x:button class="btn btn-success" zk:if="${(vm.noId() and entry.quyen.donvi_them) or (!vm.noId() and entry.quyen.donvi_sua)}"
+			onClick="@command('saveDonVi', list=vmArgs, attr='targetQuery',wdn=wdn)">
+			<n:i class="fa fa-save"></n:i>&#160;&#160;Lưu 
+		</x:button>
+		<x:button class="btn btn-default" 
+			onClick="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')">
+			<n:i ></n:i>Hủy
+		</x:button>		
+	</div>
+</window>
+</idspace>

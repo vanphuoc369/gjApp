@@ -1,0 +1,15 @@
+<!-- <?variable-resolver class="org.zkoss.spring.DelegatingVariableResolver"?> -->
+<zk>
+<zscript>
+<![CDATA[
+		import org.activiti.engine.*;
+		import org.activiti.engine.task.*;	   
+		import org.hibernate.search.jpa.*; 
+		import vn.toancauxanh.service.*;
+		import org.hibernate.search.query.dsl.*;
+		System.out.println("reindex");
+		entry = new vn.toancauxanh.service.BaseObject().core();
+		entry.baiViets.reindex(500);
+]]>
+</zscript>
+</zk>

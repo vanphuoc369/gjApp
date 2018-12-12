@@ -1,0 +1,152 @@
+<?page title="Quản lý chủ đề" contentType="text/html;charset=UTF-8"?>
+<div xmlns:zk="zk" xmlns:n="native" xmlns:x="xhtml"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init('vn.toancauxanh.cms.service.CategoryService')"
+	validationMessages="@id('vmsgs')">
+	<zscript><![CDATA[
+			self.page.title= "Quản lý chủ đề";
+		]]></zscript>
+	<zscript>
+		self.page.title= "Quản lý chủ đề";
+	</zscript>
+	<n:section class="content-header">
+		<n:h1 class="header-title">Danh sách chủ đề</n:h1>
+	</n:section>
+	<n:section class="content">
+		<n:div class="row">
+			<n:div class="col-md-12">
+	    		<n:div class="box box-info margin-box">
+	    			<n:div class="box-header">
+	    				<n:h3 class="box-title">Tìm kiếm</n:h3>
+	    				<n:div class="box-tools pull-right">
+	    					<n:button type="button" class="btn btn-box-tool" data-widget="collapse"><n:i class="fa fa-minus"></n:i></n:button>
+	    				</n:div>
+	    			</n:div>
+	    			<n:div class="box-body">
+	    				<n:div class="row">
+	    					<n:div class="col-md-4">
+	    						<n:div class="form-group">
+	    							<x:label class="control-label">Từ khóa</x:label>
+	    							<textbox class="form-control" value="@bind(vm.arg.tukhoa)" placeholder="Nhập tên chủ đề"
+	    								onOK="@command('cmd', notify=vm, attr='*')" />
+	    						</n:div>
+	    					</n:div>
+	    					<n:div class="col-md-3">
+	    						<n:div class="form-group">
+	    							<x:label class="control-label">Trạng thái</x:label>
+	    							<combobox readonly="true"
+	    								style="display:block" width="99%" placeholder="Tất cả"
+	    								model="@load(entry.trangThaiListAndNull)"
+	    								selectedItem="@bind(vm.arg.trangthai)">
+	    								<template name="model">
+	    									<comboitem
+	    										value="@load(each.key)"
+	    										label="@load(each.value eq '' ? 'Tất cả' : each.value)" />
+	    								</template>
+	    							</combobox>
+	    						</n:div>
+	    					</n:div>
+	    					<n:div class="col-md-2">
+	    						<x:label class="control-label">&#160;</x:label>
+	    						<n:div class="form-group">
+	    							<x:button class="btn btn-warning" type="button" onClick="@command('cmd', notify=vm, attr='*')" >
+										<n:i class="fa fa-search"></n:i> Tìm kiếm
+									</x:button>
+	    						</n:div>
+	    					</n:div>
+	    				</n:div>
+	    			</n:div>
+	    		</n:div>
+		    </n:div>
+			<n:div class="col-md-12">
+				<n:div class="box box-success">
+					<n:div class="box-header">
+	    				<n:h3 class="box-title"></n:h3>
+	    				<n:div class="box-tools pull-right">
+	    					<x:button class="btn btn-success" zk:if="${entry.quyen.chude_them}" onClick="@command('redirectPage', zul='chude/add.zul', vmArgs=vm, vm=null)">
+	    						<n:i class="fa fa-plus"></n:i>
+	    						Thêm mới
+	    					</x:button>
+	    				</n:div>
+	    			</n:div>
+		    		<n:div class="box-body">
+						<n:div class="dataTables_wrapper form-inline dt-bootstrap">
+							<n:div class="row">
+								<n:div class="col-md-12">
+									<tree id="tree" model="@bind(vm.model)" rows="0">
+										<treecols sizable="false">
+											<treecol label="Tên" width="40%"></treecol>
+											<treecol label="Mô tả" width="50%"></treecol>
+											<treecol label="@load(vm.strUpdate)" width="120px" sclass="text-align-center">
+												<toolbarbutton zk:if="${vm.quyen._sua}" image="@load(vm.img)" 
+													hoverImage="@load(vm.hoverImg)" onClick="@command('clickButton')" sclass="link-edit" />
+											</treecol>
+											<!-- <treecol label="Xuất hiện" hflex="min"></treecol> -->
+											<treecol label="Trạng thái" hflex="min"></treecol>
+											<treecol label="Ngày cập nhật" hflex="min"></treecol>
+											<treecol label="Thao tác" sclass="text-align-center" width="150px"></treecol>
+										</treecols>
+										<template name="model" var="node">
+											<treeitem open="true">
+												<treerow apply="org.zkoss.bind.BindComposer"
+													viewModel="@id('vmchild') @init(node.data)">
+													<treecell>
+														<label value="@load(vmchild.name)" tooltiptext="@load(vmchild.id)"></label>
+													</treecell>
+													<treecell>
+														<label
+															value="@load(vmchild.description)">
+														</label>
+													</treecell>
+													<treecell sclass="text-align-center">
+														<label value="@load(vmchild.soThuTu)" visible="@load(vm.update)" />
+														<spinner value="@bind(vmchild.soThuTu)" constraint="min 0 max 100" readonly="true" width="75%" visible="@load(!vm.update)">
+															<attribute name="onChange"><![CDATA[
+															    vm.addListChuDeThayDoiThuTu(vmchild, self.getValue());
+															]]></attribute>
+														</spinner>
+													</treecell>
+													<!-- <treecell sclass="text-align-center">
+														<checkbox checked="@bind(vmchild.visible)" onCheck="@command('updatehienThi', obj=vmchild)" />
+													</treecell> -->
+													<treecell sclass="text-align-center">
+														<n:span class="${vmchild.setStyleTrangThai(vmchild.trangThai)}">${vmchild.trangThaiText eq null ? '   ' : vmchild.trangThaiText}</n:span>
+													</treecell>
+													<treecell sclass="text-align-center">
+														<label value="@load(vmchild.ngaySua) @converter('formatedDate',format='dd/MM/yyyy')" />
+													</treecell>
+													<treecell sclass="text-align-center">
+														<x:button zk:if="${entry.quyen.chude_them}" class="btn btn-primary btn-xs"
+															onClick="@command('redirectCatagory', zul='chude/chude.zul',vmArgs=vm, node=node,tree=tree.getModel(),catSelected=vmchild)">
+															<n:i class="fa fa-plus"></n:i>
+														</x:button>
+														<x:button zk:if="${entry.quyen.chude_xem and !entry.quyen.chude_sua}" class="btn btn-info btn-xs"
+															onClick="@command('redirectPage', zul='chude/view.zul', vmArgs=vm, vm=vmchild)" >
+															<n:i class="fa fa-eye"></n:i>
+														</x:button>
+														<x:button zk:if="${entry.quyen.chude_sua}" class="btn btn-info btn-xs"
+															onClick="@command('redirectPage', zul='chude/view.zul', vmArgs=vm, vm=vmchild)" >
+															<n:i class="fa fa-pencil-square-o"></n:i>
+														</x:button>
+														<x:button zk:if="${entry.quyen.chude_xoa}" class="btn btn-danger btn-xs"
+															onClick="@command('deleteChuDe',node=node,tree=tree.getModel(),catSelected=vmchild)">
+															<n:i class="fa fa-trash-o"></n:i>
+														</x:button>
+													</treecell>
+												</treerow>
+											</treeitem>
+										</template>
+									</tree>
+									<div visible="@load(vm.sizeOfCategories le 0)" 
+										style="border: 1px solid #cfcfcf;border-top: none;color: #aaa;font-style: italic;text-align: center;">
+										Danh sách không có chủ đề nào
+									</div>
+								</n:div>
+							</n:div>
+						</n:div>
+					</n:div>
+				</n:div>
+			</n:div>		
+		</n:div>
+	</n:section>
+</div>

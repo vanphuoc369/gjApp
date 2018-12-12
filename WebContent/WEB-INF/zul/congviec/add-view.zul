@@ -1,0 +1,156 @@
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" id="wdn"
+	border="normal" mode="modal" action="show: slideIn"
+	contentStyle="overflow:auto;" title="${arg.save}" closable="true"
+	onClose="@command('onHuy', wdn=wdn)"
+	whatever="@load(false,after='saveCongViec') @converter('vn.toancauxanh.service.DetachConverter')"
+	viewModel="@id('vm') @init('vn.toancauxanh.cms.service.CongViecService')"
+	validationMessages="@id('vmsgs')" width="900px">
+	<zscript>
+		vn.toancauxanh.gg.model.DuAn duAn = arg.get("vmArgs");
+		if (duAn.getListCongViec() == null) {
+			duAn.setListCongViec(new vn.toancauxanh.cms.service.CongViecService().getTargetQueryById(duAn.getId()));
+		}
+		vm.listCongViecTemp.addAll(duAn.getListCongViec());
+	</zscript>
+	<div class="row box-body">
+ 		<div zclass="col-lg-12">
+ 			<n:div class="box box-info margin-box">
+	    		<n:div class="box-header">
+	    			<n:h3 class="box-title">Tạo mới công việc</n:h3>				
+    			</n:div>
+    			<n:div class="box-body">
+		 			<div children="@load(vm.congViec)">
+		 				<template name="children">
+							<div zclass="form-group">
+								<div zclass="row">
+									<div zclass="col-md-8 col-lg-8">
+										<hlayout class="control-label">
+											<x:label>Tên dự án</x:label>
+										</hlayout>
+										<vlayout>
+											<textbox class="form-control" width="100%" maxlength="255"
+												value="${duAn.tenDuAn}" disabled="true"/>
+										</vlayout>
+									</div>
+									<div zclass="col-md-4 col-lg-4">
+										<x:label>Người nhận việc</x:label>
+										<combobox readonly="true" style="display:block" width="100%" placeholder="Người nhận công việc"
+											model="@load(entry.nhanViens.targetQueryNhanVien.fetch())"
+											value="@load(vm.congViec.nguoiNhan.hoVaTen)" 
+											selectedItem="@load(vm.congViec.nguoiNhan) @save(vm.congViec.nguoiNhan, before={'onThemViec', 'onCapNhat'})
+												 @validator(vm.validatorCongViec)">
+											<template name="model">
+												<comboitem label="@load(each.hoVaTen)" />
+											</template>
+										</combobox>
+									</div>
+								</div>
+								<div zclass="row">
+									<div zclass="col-md-8 col-lg-8">
+										<hlayout class="control-label">
+											<x:label> Nội dung công việc <n:small class="required">*</n:small></x:label>
+										</hlayout>
+										<vlayout>
+											<textbox class="form-control" width="100%" rows="5"
+												value="@load(vm.congViec.noiDung) @save(vm.congViec.noiDung, before={'onThemViec', 'onCapNhat'})
+												@validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')"/>
+											<label zclass="error" sclass="mis-label-report" value="@load(vmsgs[self.previousSibling])" />
+										</vlayout>
+									</div>
+									<div zclass="col-md-4 col-lg-4">
+										<vlayout>
+											<x:label>Ngày giao việc</x:label>
+											<datebox width="100%" format="dd-MM-yyyy KK:mm a" timeZone="GMT+7"
+												sclass="mis-datebox-inner" value="@load(vm.congViec.ngayGiao) @save(vm.congViec.ngayGiao, before={'onThemViec', 'onCapNhat'})
+												 @validator(vm.validatorCongViec)"/>
+											<label zclass="error" sclass="mis-label-report" value="@load(vmsgs['ngayGiaoErr'])" />
+											
+											<x:label>Thời gian (h)</x:label>
+											<doublebox class="form-control" width="100%" value="@load(vm.congViec.thoiGian) @save(vm.congViec.thoiGian, before={'onThemViec', 'onCapNhat'})
+												 @validator(vm.validatorCongViec)"/>
+											<label zclass="error" sclass="mis-label-report" value="@load(vmsgs['thoiGianErr'])" />
+										</vlayout>
+									</div>
+								</div>
+								<vlayout>
+									<n:div class="box-tools pull-left">
+										<div zk:if="${vm.congViec.noiDung eq ''}">
+											<x:button class="btn btn-info" zk:if="${entry.quyen.congviec_them}"
+												onClick="@command('onThemViec', duAn=duAn, vm=vm)">
+												<n:i class="fa fa-save"></n:i> &#160;&#160;Lưu công việc
+											</x:button>
+										</div>
+										<div zk:if="${vm.congViec.noiDung ne ''}">
+											<x:button class="btn btn-warning" style="margin-right: 10px;"
+												zk:if="${entry.quyen.congviec_sua}" onClick="@command('onCapNhat')"> Cập nhật
+											</x:button>
+											<x:button class="btn btn-default" zk:if="${entry.quyen.congviec_sua}"
+												onClick="@command('onHuyCapNhat')"> Hủy
+											</x:button>
+										</div>
+									</n:div>
+								</vlayout>
+								<n:hr></n:hr>
+							</div>
+		 				</template>
+		 			</div>
+    			</n:div>
+    		</n:div>
+	    	<n:div class="box box-warning margin-box">
+	    		<n:div class="box-header">
+	    			<n:h3 class="box-title">Danh sách công việc</n:h3>				
+    			</n:div>
+    			<n:div class="box-body">
+					<n:div class="dataTables_wrapper form-inline dt-bootstrap">
+						<n:div class="row">
+							<n:div class="col-md-12">
+								<grid model="@load(vm.listCongViecTemp)" width="100%" mold="paging" pageSize="10"
+									id="grid" emptyMessage="Danh sách không có công việc nào" class="hidden-xs">
+									<columns>
+										<column label="Người nhận việc" width="36%"/>
+										<column label="Ngày nhận việc" width="36%"/>
+										<column label="Thời gian (giờ)" width="18%" sclass="text-align-center"/>
+										<column label="Thao tác" width="120px"
+											sclass="text-align-center" />
+									</columns>
+									<template name="model">
+										<row>
+											<label value="@load(each.nguoiNhan eq null ? 'Chưa có người nhận' : each.nguoiNhan.hoVaTen)"/>
+											<label value="@load(each.ngayGiao eq null ? 'Chưa giao' : each.ngayGiao)" />
+											<label style="text-align:center; display:block;" value="@load(each.thoiGian)"/>
+											<div class="text-align-center">
+												<x:button class="btn btn-info btn-xs" zk:if="${entry.quyen.congviec_sua}"
+													onClick="@command('onShow', notify=vm, item=each)">
+													<n:i class="fa fa-pencil-square-o"></n:i>
+												</x:button>
+												<x:button class="btn btn-warning btn-xs" zk:if="${entry.quyen.congviec_xem}"
+													onClick="@command('onShow', notify=vm, item=each)">
+													<n:i class="fa fa-eye"></n:i>
+												</x:button>
+												<x:a class="btn btn-danger btn-xs"
+													zk:if="${entry.quyen.congviec_xoa}"
+													onClick="@command('onDelete', notify=vm, item=each)">
+													<n:i class="fa fa-trash-o"> </n:i>
+												</x:a>
+											</div>
+										</row>
+									</template>
+								</grid>
+							</n:div>
+						</n:div>
+					</n:div>
+	    		</n:div>
+	    	</n:div>
+		</div>
+	</div>
+	<div class="row box-footer">  		
+		<x:button style="margin-right: 10px;" class="btn btn-success" 
+		 	zk:if="${(vm.noId() and entry.quyen.congviec_them) or (!vm.noId() and entry.quyen.congviec_sua)}"
+			onClick="@command('saveCongViec', wdn=wdn, duan=duAn)">
+			<n:i class="fa fa-save"></n:i> Lưu 
+		</x:button>
+		<x:button class="btn btn-default" onClick="@command('onHuy', wdn=wdn)">
+			Hủy
+		</x:button>
+	</div>
+</window>

@@ -1,0 +1,52 @@
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" xmlns:w="client" apply="org.zkoss.bind.BindComposer"
+	id="wdn" border="normal" mode="modal" action="show: slideIn"
+	contentStyle="overflow:auto;" closable="true" title="${arg.save}"
+	onClose="@command('invokeGG', notify=vmArgs, detach=wdn, attr='model')"
+	whatever="@load(true, after='saveChuDeMain') @converter('vn.toancauxanh.service.DetachConverter')"
+	viewModel="@id('vm') @init(arg.model)" validationMessages="@id('vmsgs')" width="500px">
+	<zscript>
+		vmArgs = arg.get("vmArgs");
+		node = arg.get("node");
+		tree = arg.get("tree");
+	</zscript>
+	
+	<div class="row box-body">		
+		<div class="col-md-12">
+			<div class="form-group">
+				<x:label>Tên đơn vị hành chính<n:small class="required"> *</n:small></x:label>
+				<textbox width="100%" maxlength="150" class="form-control"
+					value="@load(vm.ten) @save(vm.ten, before={'saveDonViHanhChinh'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" />
+				<label class="error" value="@load(vmsgs[self.previousSibling])" />
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="form-group">
+				<x:label>Dân số<n:small class="required"> *</n:small></x:label>
+				<doublebox class="form-control" width="100%" format="#,##0" locale="it" 
+					value="@bind(vm.danSo) @save(vm.danSo, before={'saveDonViHanhChinh'})">
+					<attribute w:name="doKeyPress_">
+						<![CDATA[
+							function(evt) {if (!this._shallIgnore(evt, "0123456789")) this.$doKeyPress_(evt);}
+						]]>
+					</attribute>
+				</doublebox>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="form-group">
+				<checkbox label="Áp dụng" checked="@bind(vm.checkApDung)" />
+			</div>
+		</div>
+	</div>
+	
+	<div class="row box-footer">		
+		<x:button class="btn btn-success" style="margin-right: 10px;" 
+			zk:if="${(vm.noId() and entry.quyen.donvihanhchinh_them) or (!vm.noId() and entry.quyen.donvihanhchinh_sua)}"
+			onClick="@command('saveDonViHanhChinh', list=vmArgs, wdn=wdn, node=node)">
+			<n:i class="fa fa-save"></n:i>&#160;&#160;Lưu 
+		</x:button>
+		<x:button class="btn btn-default" onClick="@command('invokeGG', notify=vmArgs, node=node, detach=wdn, attr='model')">
+			Hủy
+		</x:button>
+	</div>
+</window>

@@ -1,0 +1,47 @@
+<?page title="Dashboard" contentType="text/html;charset=UTF-8"?>
+<div xmlns:zk="zk" xmlns:n="native" xmlns:x="xhtml" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init('vn.toancauxanh.cms.service.BaiVietService')">
+	<n:section class="content-header">
+		<n:h1 class="header-title">Bài viết mới nhất</n:h1>
+	</n:section>
+	<n:section class="content">
+	    <n:div class="row">
+    		<n:div class="col-md-12">
+    			<n:div class="box box-success">
+	    			<n:div class="box-body">
+    					<n:div class="dataTables_wrapper form-inline dt-bootstrap">
+    						<n:div class="row">
+    							<n:div class="col-md-12">
+	   								<grid model="@load(vm.page(vm.targetQuery).fetch())" width="100%" id="grid"
+										emptyMessage="Danh sách không có bài viết nào" class="hidden-xs">
+								<columns>
+									<column label="STT" hflex="min" sclass="text-align-center"/>
+									<column label="Tiêu đề" />
+									<column label="Chủ đề" width="15%" />
+									<column label="Tác giả" width="10%" />
+									<column label="Trạng thái" hflex="min" />
+									<column label="Xuất bản"  hflex="min" sclass="text-align-center" />
+									<column label="Ngày xuất bản" hflex="min" />
+								</columns>
+								<template name="model">
+									<row apply="org.zkoss.bind.BindComposer" viewModel="@id('item') @init(each)">
+										<label value="@bind(forEachStatus.index + 1 + vm.arg.page * vm.arg.pagesize)" style="text-align:center;display:block"/>
+										<a label="@load(each.title)" tooltiptext="@load(each.id)"/>
+										<label value="@load(each.category.name)"/>
+										<label value="@load(each.author.hoVaTen)"/>
+										<n:span class="${each.setStyleStatus(each.trangThaiSoan)}">${each.trangThaiSoan eq null ? '   ' : each.trangThaiSoanText}</n:span>
+										<n:span class="${each.setStylePublishStatus(each.publishStatus)}">${each.publishStatus ? 'Có' : 'Không'}</n:span>
+										<label value="@load(each.publishBeginTime) @converter('formatedDate',format='dd/MM/yyyy')"
+											 style="text-align:center;display:block"/>
+									</row>
+								</template>
+							</grid>
+    							</n:div>
+    						</n:div>
+    					</n:div>
+    				</n:div>
+   				</n:div>
+			</n:div>   
+	    </n:div>
+	</n:section>
+</div>

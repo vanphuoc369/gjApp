@@ -1,0 +1,12 @@
+<?page title="Quản lý thông báo" contentType="text/html;charset=UTF-8"?>
+<div xmlns:zk="zk" xmlns:n="native" xmlns:x="xhtml" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init('vn.toancauxanh.cms.service.BaiVietService')">
+	<zscript><![CDATA[
+		self.page.title= "Index bài viết";
+		
+		vn.greenglobal.front.service.TimKiemService search = new vn.greenglobal.front.service.TimKiemService();
+		search.reindex(1000);
+	]]></zscript>
+	
+	<div>Done</div>
+</div>

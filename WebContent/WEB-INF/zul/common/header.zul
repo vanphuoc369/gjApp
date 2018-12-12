@@ -1,0 +1,251 @@
+<?page contentType="text/html;charset=UTF-8"?>
+<!-- <?variable-resolver class="org.zkoss.spring.DelegatingVariableResolver"?> -->
+<zk xmlns:n="native" xmlns:zk="zk" xmlns:x="xhtml">
+	<script type="text/javascript" src="/zkau/web/js/zk.wpd"></script>
+	<!-- Navigation -->
+	<zscript>
+		entry = new vn.toancauxanh.service.BaseObject().core();
+		chuakhoa = !entry.nhanVienDaKhoa;
+		chuakichhoat = entry.nhanVienDaKichHoat;
+	</zscript>
+	<n:nav class="navbar navbar-default navbar-static-top wd-header"
+		role="navigation" style="margin-bottom: 0">
+		<div zclass="navbar-header">
+			<n:a class="navbar-brand" href="${execution.contextPath}/cp">
+					Sở Tài nguyên - Môi trường Đà Nẵng
+			</n:a>
+		</div>
+		<!-- /.navbar-header -->
+		<div zclass="collapse navbar-collapse"
+			id="bs-example-navbar-collapse-1">
+			<n:ul class="nav navbar-nav">
+<!-- 				<n:li zk:if="${chuakhoa and chuakichhoat}"> -->
+<!-- 					<n:a href="${execution.contextPath}/cp"><n:i class="fa fa-home"></n:i> Dashboard</n:a> -->
+<!-- 				</n:li> -->
+				<n:li class="dropdown" zk:if="${chuakhoa and chuakichhoat}">
+					<n:a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">
+						<n:i class="fa fa-th"></n:i> Nội dung
+						<span class="caret"></span>
+					</n:a>
+					<n:ul class="dropdown-menu" role="menu">
+						<n:li zk:if="${entry.quyen.chude_lietke}">
+							<n:a href="${execution.contextPath}/cp/chude"><n:i class="fa fa-folder"></n:i> Quản lý chủ đề</n:a>
+						</n:li>
+						<n:li class="divider"></n:li>
+						<n:li zk:if="${entry.quyen.baiviet_lietke}">
+							<n:a href="${execution.contextPath}/cp/baiviet"><n:i class="fa fa-pencil"></n:i> Quản lý bài viết</n:a>
+						</n:li>
+						
+						
+						<n:li  zk:if="${entry.quyen.video_lietke}">
+							<n:a href="${execution.contextPath}/cp/video"><n:i class="fa fa-youtube-play"></n:i> Quản lý video</n:a>
+						</n:li>
+						<n:li zk:if="${entry.quyen.gallery_lietke}">
+							<n:a href="${execution.contextPath}/cp/gallery"><n:i class="fa fa-file-image-o"></n:i> Quản lý gallery</n:a>
+						</n:li>
+						
+						<n:li zk:if="${entry.quyen.lienket_lietke}">
+							<n:a href="${execution.contextPath}/cp/lienket"><n:i class="fa fa-link"></n:i> Quản lý liên kết</n:a>
+						</n:li>
+
+						<n:li class="dropdown-submenu" >
+		                    <n:a tabindex="-1"><n:i class="fa fa-link"></n:i> Quản lý hỏi đáp trực tuyến</n:a>
+		                    <n:ul class="dropdown-menu">
+		                        <n:li zk:if="${entry.quyen.linhvuchoidap_lietke }">
+		                        	<n:a href="${execution.contextPath}/cp/linhvuchoidap">Quản lý lĩnh vực hỏi đáp</n:a>
+		                        </n:li>
+		                        <n:li zk:if="${entry.quyen.hoidaptructuyen_lietke }">
+		                        	<n:a href="${execution.contextPath}/cp/hoidaptructuyen">Quản lý hỏi đáp trực tuyến</n:a>
+		                        </n:li>
+		                    </n:ul>
+		                </n:li>
+		                
+						<!-- <n:li zk:if="${entry.quyen.hoidaptructuyen_lietke}">
+							<n:a href="${execution.contextPath}/cp/hoidaptructuyen"><n:i class="fa fa-link"></n:i> Quản lý hỏi đáp trực tuyến</n:a>
+						</n:li> -->  
+						         
+						<n:li class="dropdown-submenu" >
+		                    <n:a tabindex="-1"><n:i class="fa fa-comments"></n:i> Quản lý FAQ</n:a>
+		                    <n:ul class="dropdown-menu">
+		                        <n:li zk:if="${entry.quyen.faqcategory_lietke}">
+		                        	<n:a href="${execution.contextPath}/cp/faqcategory">Quản lý danh mục</n:a>
+		                        </n:li>
+		                        <n:li zk:if="${entry.quyen.faq_lietke}">
+		                        	<n:a href="${execution.contextPath}/cp/faq">Quản lý câu hỏi và trả lời</n:a>
+		                        </n:li>
+		                    </n:ul>
+		                </n:li>		                
+					</n:ul>
+				</n:li>
+				<n:li>
+					<n:a href="#" class="dropdown-toggle" zk:if="${chuakhoa and chuakichhoat}"
+						data-toggle="dropdown">
+						<n:i class="fa fa-file-text"></n:i> Văn bản
+						<span class="caret"></span>
+					</n:a>
+					<n:ul class="dropdown-menu" role="menu" >						
+						<n:li class="dropdown-submenu" >
+		                    <n:a tabindex="-1"><n:i class="fa fa-file-text"></n:i> Quản lý Văn bản pháp quy</n:a>
+		                    <n:ul class="dropdown-menu">
+		                        <n:li zk:if="${entry.quyen.vanbanphapquy_lietke}">
+		                        	<n:a href="${execution.contextPath}/cp/vanbanphapquy">Văn bản quy phạm pháp luật</n:a>
+		                        </n:li>
+		                        <n:li zk:if="${entry.quyen.theloai_lietke}">
+		                        	<n:a href="${execution.contextPath}/cp/theloai">Loại văn bản</n:a>
+		                        </n:li>
+		                        <n:li zk:if="${entry.quyen.linhvuc_lietke}">
+		                        	<n:a href="${execution.contextPath}/cp/linhvuc">Lĩnh vực</n:a>
+		                        </n:li>
+		                        <n:li zk:if="${entry.quyen.coquanbanhanh_lietke}">
+		                        	<n:a href="${execution.contextPath}/cp/coquanbanhanh">Cơ quan ban hành</n:a>
+		                        </n:li>
+		                        <n:li zk:if="${entry.quyen.capbanhanh_lietke}">
+		                        	<n:a href="${execution.contextPath}/cp/capbanhanh">Cấp ban hành</n:a>
+		                        </n:li>
+		                    </n:ul>
+		                </n:li>
+						
+						<n:li zk:if="${entry.quyen.vanbanduthao_lietke}">
+							<n:a
+								href="${execution.contextPath}/cp/vanbanduthao">
+								<n:i class="fa fa-file-text"></n:i>
+								Quản lý Góp ý dự thảo văn bản
+							</n:a>
+						</n:li>
+					</n:ul>
+				</n:li>
+				<n:li>
+					<n:a href="#" class="dropdown-toggle" zk:if="${chuakhoa and chuakichhoat}"
+						data-toggle="dropdown">
+						<n:i class="fa fa-users"></n:i> Thống kê
+						<span class="caret"></span>
+					</n:a>
+					<n:ul class="dropdown-menu" role="menu">
+						<n:li zk:if="${entry.quyen.thongkebaiviettheochuyenmuc_lietke}">
+							<n:a href="${execution.contextPath}/cp/thongkebaiviettheochuyenmuc"><n:i class="fa fa-gear"></n:i> Thống kê theo chuyên mục</n:a>
+						</n:li>
+						<n:li zk:if="${entry.quyen.thongkebaiviettheotacgia_lietke}">
+							<n:a href="${execution.contextPath}/cp/thongkebaiviettheotacgia"><n:i class="fa fa-gear"></n:i> Thống kê theo tác giả</n:a>
+						</n:li>
+					</n:ul>
+				</n:li>
+				<n:li>
+					<n:a href="#" class="dropdown-toggle" zk:if="${chuakhoa and chuakichhoat}"
+						data-toggle="dropdown">
+						<n:i class="fa fa-users"></n:i> Người dùng
+						<span class="caret"></span>
+					</n:a>
+					<n:ul class="dropdown-menu" role="menu">
+						<n:li zk:if="${entry.quyen.nguoidung_lietke}">
+							<n:a href="${execution.contextPath}/cp/nguoidung"><n:i class="fa fa-user"></n:i> Quản lý người dùng</n:a>
+						</n:li>
+						<n:li zk:if="${entry.quyen.vaitro_lietke}">
+							<n:a href="${execution.contextPath}/cp/vaitro"><n:i class="fa fa-gear"></n:i> Quản lý vai trò</n:a>
+						</n:li>
+					</n:ul>
+				</n:li>
+				
+				<n:li style="">
+					<n:a href="#" class="dropdown-toggle" zk:if="${chuakhoa and chuakichhoat}"
+						data-toggle="dropdown">
+						<n:i class="fa fa-gears"></n:i> Hệ thống
+						<span class="caret"></span>
+					</n:a>
+					<n:ul class="dropdown-menu" role="menu">
+						<n:li class="dropdown-submenu" >
+		                    <n:a href="#" tabindex="-1"><n:i class="fa fa-wrench"></n:i> Quản lý banner</n:a>
+		                    <n:ul class="dropdown-menu">
+		                        <n:li zk:if="${entry.quyen.banner_lietke}">
+		                        	<n:a href="${execution.contextPath}/cp/banner">Quảng cáo</n:a>
+		                        </n:li>
+		                    </n:ul>
+		                </n:li>
+						
+						<n:li class="dropdown-submenu" >
+		                    <n:a tabindex="-1"><n:i class="fa fa-wrench"></n:i> Quản lý menu</n:a>
+		                    <n:ul class="dropdown-menu">
+		                        <n:li zk:if="${entry.quyen.menumain_lietke}">
+		                        	<n:a href="${execution.contextPath}/cp/menumain">Quản lý menu chính</n:a>
+		                        </n:li>
+		                    <n:li zk:if="${entry.quyen.menuright_lietke}">
+		                        <n:a href="${execution.contextPath}/cp/menuright">Quản lý menu phải</n:a>
+		                    </n:li>
+<!-- 		                    <n:li zk:if="${entry.quyen.menufooter_lietke}"> -->
+<!-- 		                        <n:a href="${execution.contextPath}/cp/menufooter">Quản lý menu chân trang</n:a> -->
+<!-- 		                    </n:li> -->
+		                    </n:ul>
+		                </n:li>
+		                <n:li zk:if="${entry.quyen.portlethtml_lietke}">
+							<n:a href="${execution.contextPath}/cp/portlethtml"><n:i class="fa fa-wrench"></n:i> Quản lý Portlet Html</n:a>
+						</n:li>
+						<n:li zk:if="${entry.quyen.language_lietke}">
+ 							<n:a href="${execution.contextPath}/cp/language"><n:i class="fa fa-wrench"></n:i> Quản lý ngôn ngữ</n:a> 
+ 						</n:li>
+						<n:li zk:if="${entry.quyen.cauhinhhethong_sua}">
+							<x:a zk:onClick='Executions.createComponents("/WEB-INF/zul/cauhinh/setting.zul", null, null);'>
+								<n:i class="fa fa-wrench"></n:i> Cấu hình hệ thống
+							</x:a>
+						</n:li>
+<!-- 						<n:li> -->
+<!--                             <x:a zk:onClick='Executions.createComponents("cauhinh/theme.zul", null, null);'> -->
+<!--                                 <n:i class="fa fa-wrench"></n:i> Thay đổi theme -->
+<!--                             </x:a> -->
+<!--                         </n:li> -->
+<!-- 						<n:li> -->
+<!--                             <x:a zk:onClick='Executions.createComponents("cauhinh/layout.zul", null, null);'> -->
+<!--                                 <n:i class="fa fa-wrench"></n:i> Thay đổi layout -->
+<!--                             </x:a> -->
+<!--                         </n:li> -->
+					</n:ul>
+				</n:li>
+				<n:li>
+					<x:a href="#" zk:if="${chuakhoa and chuakichhoat}"
+						zk:onClick='Executions.createComponents("/WEB-INF/zul/trogiup/list.zul", null, null);'>
+						<n:i class="fa fa-question"></n:i> Trợ giúp
+					</x:a>
+				</n:li>
+			</n:ul>
+		</div><!-- /.navbar-collapse -->
+
+		<n:ul class="nav navbar-top-links navbar-right">
+			<n:li class="dropdown gg-disp-none">
+				<n:a class="dropdown-toggle" data-toggle="dropdown"
+					href="#">
+					<n:i class="fa fa-bell fa-fw"></n:i>
+					<n:i class="fa fa-caret-down"></n:i>
+					<n:span class="badge">6</n:span>
+				</n:a>				
+			</n:li>
+			<!-- /.dropdown -->
+			<n:li class="dropdown">
+				<n:a class="dropdown-toggle" data-toggle="dropdown"
+					href="#">
+					<image src="/backend/assets/img/avatar.png" />
+					<span class="username hidden-1024">
+						${entry.nhanVien.hoVaTen}
+					</span>
+					<!-- <n:i class="fa fa-user fa-fw"></n:i> -->
+					<n:i class="fa fa-caret-down"></n:i>
+				</n:a>
+				<n:ul class="dropdown-menu dropdown-user">
+					<n:li zk:if="${chuakhoa and chuakichhoat}">
+						<x:a href="#" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init(entry.nhanViens)"
+							zk:onClick='Executions.createComponents("/WEB-INF/zul/nguoidung/edit.zul", null, Collections.singletonMap("vm", entry.nhanVien));'>
+							<n:i class="fa fa-user fa-fw"></n:i> Thông tin cá nhân
+						</x:a>
+					</n:li>
+					<n:li class="divider"></n:li>
+					<n:li>
+						<x:a href="#" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init(entry.nhanViens)" onClick="@command('logout')">
+							<n:i class="fa fa-sign-out fa-fw"></n:i> Logout
+						</x:a>
+					</n:li>
+				</n:ul>
+				<!-- /.dropdown-user -->
+			</n:li>
+			<!-- /.dropdown -->
+		</n:ul>
+		<!-- /.navbar-top-links -->
+	</n:nav>
+</zk>
